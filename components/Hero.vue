@@ -14,42 +14,35 @@
   const innerContainer = ref(null);
   const content = ref(null);
 
-  onMounted(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: heroSection.value,
-        start: "top top",
-        end: "+=150%", // Tambah durasi agar transisi lebih lega
-        pin: true,
-        scrub: 1,
-      }
-    });
+  onMounted(async () => {
+  await nextTick();
 
-    // 1. Efek Zoom-out: Seluruh container mengecil ke tengah
-    tl.to(innerContainer.value, {
-      scale: 0.5, // Mengecil lebih jauh agar efek zoom-out kuat
-      opacity: 0, // Sambil menghilang
-      borderRadius: "100px", // Membuatnya sangat melengkung saat mengecil
-      ease: "power2.inOut",
-      duration: 1.5
-    }, 0);
-
-    // 2. Teks menghilang lebih cepat dari container-nya
-    tl.to(content.value, {
-      scale: 0.5,
-      opacity: 0,
-      ease: "power2.inOut",
-      duration: 1
-    }, 0);
-
-    // 3. KUNCI REVOLUT: Gallery Naik Menutup
-    // Kita tarik Gallery ke atas tepat saat Hero mengecil
-    tl.to(".featured-gallery", {
-      yPercent: -100, // Menarik Gallery naik ke posisi Hero
-      ease: "none",
-      duration: 1.5
-    }, 0);
+  // Timeline untuk Hero
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: heroSection.value,
+      start: "top top",
+      end: "+=100%", // Durasi pindah dari Hero ke Gallery
+      pin: true,     // Hero ditahan di layar
+      scrub: 1,      // Animasi mengikuti kecepatan scroll
+    }
   });
+
+  // 1. Animasi Hero Mengecil dan Menghilang
+  tl.to(innerContainer.value, {
+    scale: 0.5,      // Mengecil ke tengah
+    opacity: 0,      // Benar-benar menghilang
+    borderRadius: "150px", 
+    ease: "power2.inOut",
+  });
+
+  // 2. Animasi Content (Teks) menghilang lebih cepat
+  tl.to(content.value, {
+    opacity: 0,
+    y: -50,          // Teks sedikit naik ke atas saat menghilang
+    duration: 0.5
+  }, 0); // Mulai bersamaan dengan innerContainer
+});
 </script>
 
 <template>
@@ -59,12 +52,10 @@
       class="relative w-full h-full overflow-hidden flex items-center "
     >
       <div 
-        class="absolute inset-0 bg-cover bg-center z-0"
+        class="absolute inset-0 bg-cover"
         style="background-image: url('/images/landingpage.jpg');"
       ></div> 
-
-      <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/40 via-transparent to-transparent z-20"></div>
-
+      
       <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-8 md:px-20 relative z-30">
         
         <div ref="content" class="flex flex-col items-start text-left">

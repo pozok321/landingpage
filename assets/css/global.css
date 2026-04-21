@@ -1,0 +1,20 @@
+/* assets/css/global.css */
+
+/* Standar Tailwind v3 untuk Nuxt */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Google Fonts tetap di sini */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+@layer base {
+  body {
+    @apply leading-[normal] m-0;
+  }
+  
+  /* Reset border sesuai desain Figma Anda */
+  *, *::before, *::after {
+    border-width: 0;
+  }
+}
