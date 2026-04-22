@@ -15,6 +15,16 @@
     gsap.registerPlugin(ScrollTrigger);
   }
 
+  const config = useRuntimeConfig()
+
+  // Panggil API menggunakan URL dari config
+  const {
+    data
+  } = await useFetch(`${config.public.apiUrl}/events`)
+
+  onMounted(() => {
+  })
+
   // Ref untuk container utama
   const galleryRef = ref(null);
   // Ref khusus untuk grid gambar agar rata

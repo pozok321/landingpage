@@ -2,7 +2,7 @@
   <section class="relative w-full min-h-screen bg-black flex items-center justify-center overflow-hidden py-20 px-6">
     <div class="absolute inset-0 z-0">
       <img 
-        src="/images/support.png" 
+        src="/images/realtime-analytic.png" 
         alt="Background" 
         class="w-full h-full object-cover opacity-80"
       />
@@ -24,17 +24,17 @@
       <div class="flex justify-center mb-16">
         <div class="w-64 h-80 rounded-[32px] border border-white/20 bg-white/5 flex flex-col items-center justify-center p-8 transition-transform hover:scale-105 duration-500">
           <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-white/10">
-            <img src="/public/images/support-icon.svg" alt="" srcset="">
+            <img src="/public/images/analytics-icon.svg" alt="" srcset="">
           </div>
           
-          <h3 class="text-white text-xl font-bold mb-2">Support</h3>
-          <p class="text-white text-sm">24/7 customer support</p>
+          <h3 class="text-white text-xl font-bold mb-2">Analytics</h3>
+          <p class="text-white text-sm">Real-time event insights</p>
         </div>
       </div>
 
       <div class="max-w-3xl mx-auto">
         <p class="text-gray-300 text-sm md:text-base leading-relaxed">
-          Our dedicated support team is available around the clock to assist you whenever you need help, ensuring your events run smoothly without interruptions.
+          Track event performance and guest engagement in real time with clear insights and data visualization, helping you make better decisions throughout your event.
         </p>
       </div>
 

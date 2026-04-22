@@ -4,8 +4,8 @@
       
       <div class="flex flex-col md:flex-row justify-between items-center mb-8">
   <div class="mb-6 md:mb-0">
-    <h2 class="text-3xl font-bold tracking-tighter text-white">
-      un<span class="text-blue-500">d</span>angin
+      <h2 class="text-3xl font-bold tracking-tighter text-white">
+        <img src="/public/images/undangin-logo-white.png" alt="Undangin Logo" srcset="">
     </h2>
   </div>
   
