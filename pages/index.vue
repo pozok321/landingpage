@@ -2,13 +2,11 @@
   <main>
     <Hero />
     <Gallery />
-    <FastSetup />
-    <Support/>
-    <Security />
-    <Analytics />
-    <MultiPlatform />
-    <SaveTime />
-     <Ticket />
+    <Features />
+    <Faq />
+    <Ticket />
+    <Blog />
+    <Partners />
     <Testimoni />
     <DownloadApp />
     <Footer />

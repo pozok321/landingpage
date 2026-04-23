@@ -3,117 +3,279 @@
     gsap
   } from 'gsap';
   import {
-    ScrollTrigger
-  } from 'gsap/ScrollTrigger';
-  import {
     onMounted,
+    onUnmounted,
     ref,
     nextTick
   } from 'vue';
 
-  if (process.client) {
-    gsap.registerPlugin(ScrollTrigger);
-  }
+  const currentIndex = ref(0);
+  let autoSlideInterval = null;
 
-  // Ref untuk container utama
-  const galleryRef = ref(null);
-  // Ref khusus untuk grid gambar agar rata
-  const imageGridRef = ref(null);
-  // Ref khusus untuk grid stats agar rata
-  const statsGridRef = ref(null);
+  const slides = [{
+      id: 'fast-setup'
+    },
+    {
+      id: 'support'
+    },
+    {
+      id: 'security'
+    },
+    {
+      id: 'analytics'
+    },
+    {
+      id: 'multiplatform'
+    },
+    {
+      id: 'savetimes'
+    }
+  ];
+
+  const goToSlide = (index) => {
+    // Logic untuk looping (jika index < 0 balik ke akhir, jika lebih balik ke awal)
+    if (index < 0) {
+      currentIndex.value = slides.length - 1;
+    } else if (index >= slides.length) {
+      currentIndex.value = 0;
+    } else {
+      currentIndex.value = index;
+    }
+
+    gsap.to('.slide-item', {
+      xPercent: -100 * currentIndex.value,
+      duration: 1.2,
+      ease: "power3.inOut"
+    });
+
+    // Reset timer auto-slide setiap kali user klik manual agar tidak bentrok
+    resetTimer();
+  };
+
+  const nextSlide = () => goToSlide(currentIndex.value + 1);
+  const prevSlide = () => goToSlide(currentIndex.value - 1);
+
+  const resetTimer = () => {
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+    autoSlideInterval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+  };
 
   onMounted(async () => {
     await nextTick();
-
-    // FIX: Animasi Parallax halus untuk SELURUH container grid gambar (bukan per item)
-    if (imageGridRef.value) {
-      gsap.to(imageGridRef.value, {
-        y: -50, // Bergerak naik sedikit secara bersamaan
-        ease: "none",
-        scrollTrigger: {
-          trigger: imageGridRef.value,
-          start: "top bottom", // Mulai saat grid masuk layar
-          end: "bottom top", // Selesai saat grid keluar layar
-          scrub: true // Mengikuti scroll
-        }
-      });
-    }
-
-    // FIX: Animasi Parallax halus untuk SELURUH container grid stats (bukan per item)
-    if (statsGridRef.value) {
-      gsap.to(statsGridRef.value, {
-        y: -30, // Bergerak naik sedikit bersamaan
-        ease: "none",
-        scrollTrigger: {
-          trigger: statsGridRef.value,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true
-        }
-      });
-    }
+    resetTimer();
   });
 
-  const bentoPhotos = [{
-      title: 'Client Satisfaction',
-      stats: '99%',
-      labelBold: 'Trusted',
-      desc: 'by organizers for reliable and seamless event management',
-      url: '/images/left-image.png',
-    },
-    {
-      title: 'Event Managed',
-      stats: '500+',
-      labelBold: 'Successfully',
-      desc: 'supporting events across various industries and scales',
-      url: '/images/center-image.png',
-    },
-    {
-      title: 'Guest Registered',
-      stats: '1 Million+',
-      labelBold: 'Millions of guest',
-      desc: 'experiences handled smoothly through our platform',
-      url: '/images/right-image.png',
-    }
-  ];
+  onUnmounted(() => {
+    if (autoSlideInterval) clearInterval(autoSlideInterval);
+  });
 </script>
 
 <template>
-  <div ref="galleryRef"
-    class="w-full min-h-screen bg-white overflow-hidden px-4 sm:px-8 md:px-16 lg:px-40 py-16 md:py-24">
-    <div class="text-center mb-16 md:mb-20">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-black leading-tight mb-5 tracking-tight">
-        Seamless Event Experiences
-      </h1>
-      <p class="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-        With hundreds of events managed and over a million guests registered, our platform continues to deliver reliable
-        event solutions
-      </p>
-    </div>
-
-    <div ref="imageGridRef" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 md:mb-24">
-      <div v-for="(photo, index) in bentoPhotos" :key="index"
-        class="h-[373px] w-full md:w-[286px] mx-auto relative rounded-[32px] overflow-hidden bg-gray-100 shadow-lg group">
-        <img :src="photo.url" :alt="photo.title"
-          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-
-        <div class="absolute inset-0 bg-black/30"></div>
-
-        <div class="relative h-full w-full flex flex-col items-center justify-center text-center px-4">
-          <p class="text-white text-sm font-medium mb-1">{{ photo.title }}</p>
-          <h2 class="text-white text-5xl md:text-6xl font-bold tracking-tight">
-            {{ photo.stats }}
-          </h2>
+  <div class="relative overflow-hidden bg-black w-full h-screen group">
+    <div class="flex w-full h-full items-center">
+      <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
+        <div class="absolute inset-0">
+          <img src="/images/fastsetup.png" class="w-full h-full object-cover opacity-50" alt="BG" />
         </div>
+        <div class="relative z-10 text-center px-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Built for Effortless Event Management
+          </h2>
 
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%]">
-          <div class="bg-white/90 backdrop-blur-sm py-3 px-4 rounded-2xl shadow-sm text-center">
-            <p class="text-[11px] leading-snug text-gray-800">
-              <span class="font-bold">{{ photo.labelBold }}</span> {{ photo.desc }}
+          <div class="max-w-3xl mx-auto mb-12">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Powerful features designed to simplify event planning, streamline guest management, and ensure a seamless event experience.
+            </p>
+          </div>
+          <div class="inline-block p-10 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[40px]">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <img src="/images/fastsetup-icon.svg" class="w-8" alt="Icon" />
+            </div>
+            <h3 class="text-white text-2xl font-bold">Fast Setup</h3>
+            <p class="text-gray-400">Ready in minutes</p>
+          </div>
+          <div class="max-w-3xl mx-auto mt-4">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Get your event up and running in minutes with a simple and intuitive setup process, allowing you to focus
+              more on planning a successful and memorable event.
             </p>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
+        <div class="absolute inset-0">
+          <img src="/images/support.png" class="w-full h-full object-cover opacity-50" alt="BG" />
+        </div>
+
+        <div class="relative z-10 text-center px-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Built for Effortless Event Management
+          </h2>
+
+          <div class="max-w-3xl mx-auto mb-12">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Powerful features designed to simplify event planning, streamline guest management, and ensure a seamless event experience.
+            </p>
+          </div>
+          <div class="inline-block p-10 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[40px]">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <img src="/images/support-icon.svg" class="w-8" alt="Icon" />
+            </div>
+            <h3 class="text-white text-2xl font-bold">24/7 Support</h3>
+            <p class="text-gray-400">Always ready to help</p>
+          </div>
+          <div class="max-w-3xl mx-auto mt-4">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Our dedicated support team is available around the clock to assist you whenever you need help, ensuring
+              your events run smoothly without interruptions.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
+        <div class="absolute inset-0">
+          <img src="/images/security.png" class="w-full h-full object-cover opacity-50" alt="BG" />
+        </div>
+        <div class="relative z-10 text-center px-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Built for Effortless Event Management
+          </h2>
+
+          <div class="max-w-3xl mx-auto mb-12">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Powerful features designed to simplify event planning, streamline guest management, and ensure a seamless event experience.
+            </p>
+          </div>
+          <div class="inline-block p-10 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[40px]">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <img src="/images/security-icon.svg" class="w-8" alt="Icon" />
+            </div>
+            <h3 class="text-white text-2xl font-bold">Data Security</h3>
+            <p class="text-gray-400">Guest data stored <br>securely and encrypted</p>
+          </div>
+          <div class="max-w-3xl mx-auto mt-4">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              We prioritize the security of your event and guest data with advanced protection systems, ensuring that
+              all information remains safe, secure, and reliable.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
+        <div class="absolute inset-0">
+          <img src="/images/realtime-analytic.png" class="w-full h-full object-cover opacity-50" alt="BG" />
+        </div>
+        <div class="relative z-10 text-center px-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Built for Effortless Event Management
+          </h2>
+
+          <div class="max-w-3xl mx-auto mb-12">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Powerful features designed to simplify event planning, streamline guest management, and ensure a seamless event experience.
+            </p>
+          </div>
+          <div class="inline-block p-10 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[40px]">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <img src="/images/analytics-icon.svg" class="w-8" alt="Icon" />
+            </div>
+            <h3 class="text-white text-2xl font-bold">Analytics</h3>
+            <p class="text-gray-400">Gain insights with <br>real-time analytics</p>
+          </div>
+          <div class="max-w-3xl mx-auto mt-4">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+            Track event performance and guest engagement in real time with clear insights and data visualization, helping you make better decisions throughout your event.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
+        <div class="absolute inset-0">
+          <img src="/images/multiplatform.png" class="w-full h-full object-cover opacity-50" alt="BG" />
+        </div>
+        <div class="relative z-10 text-center px-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Built for Effortless Event Management
+          </h2>
+
+          <div class="max-w-3xl mx-auto mb-12">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Powerful features designed to simplify event planning, streamline guest management, and ensure a seamless event experience.
+            </p>
+          </div>
+          <div class="inline-block p-10 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[40px]">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <img src="/images/multiplatform-icon.svg" class="w-8" alt="Icon" />
+            </div>
+            <h3 class="text-white text-2xl font-bold">Multi-Platform Support</h3>
+            <p class="text-gray-400">Access from any device</p>
+          </div>
+          <div class="max-w-3xl mx-auto mt-4">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+            Manage and monitor your events seamlessly across multiple devices, including desktop, tablet, and mobile, giving you full control wherever you are.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
+        <div class="absolute inset-0">
+          <img src="/images/savetime.png" class="w-full h-full object-cover opacity-50" alt="BG" />
+        </div>
+        <div class="relative z-10 text-center px-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+            Built for Effortless Event Management
+          </h2>
+
+          <div class="max-w-3xl mx-auto mb-12">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+              Powerful features designed to simplify event planning, streamline guest management, and ensure a seamless event experience.
+            </p>
+          </div>
+          <div class="inline-block p-10 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-[40px]">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <img src="/images/savetime-icon.svg" class="w-8" alt="Icon" />
+            </div>
+            <h3 class="text-white text-2xl font-bold">Save Time</h3>
+            <p class="text-gray-400">Automate RSVP and <br> registration processes</p>
+          </div>
+          <div class="max-w-3xl mx-auto mt-4">
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+            Automate repetitive tasks and streamline event management processes so you can save valuable time and focus on creating exceptional event experiences.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <button @click="prevSlide"
+      class="absolute left-6 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all hover:bg-white hover:text-black opacity-0 group-hover:opacity-100">
+      <i class="bx bx-chevron-left text-3xl"></i>
+    </button>
+
+    <button @click="nextSlide"
+      class="absolute right-6 top-1/2 -translate-y-1/2 z-30 w-14 h-14 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all hover:bg-white hover:text-black opacity-0 group-hover:opacity-100">
+      <i class="bx bx-chevron-right text-3xl"></i>
+    </button>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+      <button v-for="(slide, index) in slides" :key="index" @click="goToSlide(index)" :class="[
+          'h-2 rounded-full transition-all duration-500',
+          currentIndex === index ? 'w-8 bg-blue-500' : 'w-2 bg-gray-400'
+        ]"></button>
     </div>
   </div>
 </template>
+
+<style scoped>
+  .slide-item {
+    will-change: transform;
+  }
+</style>

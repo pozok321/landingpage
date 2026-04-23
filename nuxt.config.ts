@@ -21,7 +21,18 @@ export default defineNuxtConfig({
   css: ['~/assets/css/global.css'],
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts'],
   ssr: false,
+  googleFonts: {
+    families: {
+      Inter: [400, 700], // Sesuaikan weight yang dibutuhkan
+    },
+    display: 'swap', // Mencegah layout shift
+    prefetch: true,
+    preconnect: true,
+    preload: true,
+    download: true, // Download font agar host sendiri (lebih cepat)
+  }
+
   
 })

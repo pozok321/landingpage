@@ -21,7 +21,7 @@
 </script>
 
 <template>
-    <section class="py-24 bg-gray-50 overflow-hidden">
+    <section class="py-24 overflow-hidden">
         <div class="max-w-7xl mx-auto px-6">
 
             <div class="text-center mb-16">

@@ -1,11 +1,11 @@
 <template>
-  <nav 
-    ref="navRef"
-    :class="[
-      'fixed top-0 w-full z-[100] transition-all duration-300 px-6 py-4',
-      isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
-    ]"
-  >
+<nav 
+  ref="navRef" style="pointer-events: auto;"
+  :class="[
+    'fixed top-0 w-full z-[100] transition-all duration-300 px-6 py-4 will-change-transform',
+    isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
+  ]"
+>
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <div class="flex items-center space-x-12">
         <a href="/" class="flex items-center">
@@ -23,19 +23,25 @@
             isScrolled ? 'text-gray-600' : 'text-white/90'
           ]"
         >
-          <a href="#" class="hover:text-blue-500 transition">Gallery</a>
-          <a href="#" class="hover:text-blue-500 transition">Features</a>
-          <a href="#" class="hover:text-blue-500 transition">Contact</a>
+          <a href="#" class="hover:text-blue-500 transition">Home</a>
+          <a href="#" class="hover:text-blue-500 transition">Services</a>
+          <a href="#" class="hover:text-blue-500 transition">Portofolio</a>
+          <a href="#" class="hover:text-blue-500 transition">Blog & Article</a>
         </div>
       </div>
 
       <div class="flex items-center space-x-4">
         <button 
-          class="hidden sm:block bg-blue-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20"
+          class="hidden sm:block text-black bg-[#D1D1D1] px-6 py-2 rounded-full font-sans transition shadow-lg"
         >
-          Get Started
+         Contact Us
         </button>
 
+         <button 
+          class="hidden sm:block text-black bg-[#D1D1D1] px-6 py-2 rounded-full font-sans transition shadow-lg"
+        >
+         Contact Us
+        </button>
         <button 
           @click="toggleMenu"
           class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 z-[110]"
@@ -104,22 +110,34 @@ onMounted(() => {
   if (process.client) {
     gsap.registerPlugin(ScrollTrigger)
     
-    // Update isScrolled state
     window.addEventListener('scroll', () => {
       isScrolled.value = window.scrollY > 50
     })
 
-    // Navbar Auto-hide on Scroll
+    // Logika khusus: Navbar hilang SETELAH melewati Hero
     ScrollTrigger.create({
+      trigger: "section", // Kita targetkan section pertama (Hero)
       start: "top top",
-      onUpdate: (self) => {
-        if (!isMenuOpen.value) { // Hanya auto-hide jika menu mobile tertutup
-          if (self.direction === 1) {
-            gsap.to(navRef.value, { yPercent: -100, duration: 0.4, ease: "power2.inOut" })
-          } else {
-            gsap.to(navRef.value, { yPercent: 0, duration: 0.4, ease: "power2.out" })
-          }
-        }
+      // Navbar akan menghilang saat bagian bawah Hero melewati bagian atas layar
+      endTrigger: "section", 
+      end: "bottom top", 
+      onLeave: () => {
+        // Saat scroll meninggalkan Hero ke bawah
+        gsap.to(navRef.value, { 
+          yPercent: -120, 
+          duration: 0.4, 
+          ease: "power2.inOut",
+          overwrite: "auto"
+        })
+      },
+      onEnterBack: () => {
+        // Saat scroll kembali masuk ke area Hero dari bawah
+        gsap.to(navRef.value, { 
+          yPercent: 0, 
+          duration: 0.4, 
+          ease: "power2.out",
+          overwrite: "auto"
+        })
       }
     })
   }

@@ -1,10 +1,10 @@
 <template>
   <section class="py-20 bg-white px-6">
-    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
       
       <div class="space-y-8">
         <div class="space-y-4">
-          <h2 class="text-5xl md:text-7xl font-bold text-[#4B6181] leading-[1.1]">
+          <h2 class="text-5xl md:text-6xl font-bold text-[#4B6181] leading-[1.1]">
             Everything <br />
             Set Up, <br />
             Effortlessly
