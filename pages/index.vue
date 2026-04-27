@@ -3,12 +3,12 @@
     <Hero />
     <Gallery />
     <Features />
-    <Faq />
     <Ticket />
+     <DownloadApp />
     <Blog />
     <Partners />
     <Testimoni />
-    <DownloadApp />
+    <Faq />
     <Footer />
   </main>
 </template>

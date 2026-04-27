@@ -1,7 +1,7 @@
 <script setup>
     // Import computed secara eksplisit untuk memastikan reaktivitas berjalan
     import {
-        computed,ref, onMounted
+        ref, onMounted
     } from 'vue'
 
     const api = useApi()

@@ -2,7 +2,7 @@
   <section class="py-20 bg-white px-6">
     <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
       
-      <div class="space-y-8">
+      <div class="space-y-8 m-auto">
         <div class="space-y-4">
           <h2 class="text-5xl md:text-6xl font-bold text-[#4B6181] leading-[1.1]">
             Everything <br />
@@ -16,7 +16,7 @@
 
         <div class="space-y-4">
           <p class="text-xs italic text-gray-400">* Available on the App Store and Google Play</p>
-          <div class="flex flex-wrap gap-4">
+          <div class="flex gap-4">
             <a href="#" class="transition-transform hover:scale-105">
               <img 
                 src="/public/images/playstore.svg" 
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div class="space-y-10">
+      <div class="space-y-10 m-auto">
         <div 
           v-for="(item, index) in steps" 
           :key="index"

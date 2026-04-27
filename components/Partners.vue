@@ -37,7 +37,7 @@
           <div 
             v-for="partner in getPartnersData.partners" 
             :key="partner.partner_id"
-            class="partner-logo w-32 md:w-40 h-20 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-500 opacity-80 hover:opacity-100 transform hover:scale-110"
+            class="partner-logo w-32 md:w-40 h-20 flex items-center justify-center transition-all duration-500 opacity-80 hover:opacity-100 transform hover:scale-110"
           >
             <img :src="partner.partner_logo" :alt="partner.partner_name" class="max-w-full max-h-full object-contain" />
           </div>
