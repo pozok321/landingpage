@@ -24,12 +24,7 @@
 
   onMounted(() => {
   })
-
-  // Ref untuk container utama
-  const galleryRef = ref(null);
-  // Ref khusus untuk grid gambar agar rata
   const imageGridRef = ref(null);
-  // Ref khusus untuk grid stats agar rata
   const statsGridRef = ref(null);
 
   onMounted(async () => {
@@ -89,41 +84,43 @@
 </script>
 
 <template>
-  <div ref="galleryRef"
-    class="w-full min-h-screen bg-white overflow-hidden px-4 sm:px-8 md:px-16 lg:px-40 py-16 md:py-24">
-    <div class="text-center mb-16 md:mb-20">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-black leading-tight mb-5 tracking-tight">
-        Seamless Event Experiences
-      </h1>
-      <p class="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-        With hundreds of events managed and over a million guests registered, our platform continues to deliver reliable
-        event solutions
-      </p>
-    </div>
+  <section ref="galleryRef" class="w-full bg-white overflow-hidden py-20 md:py-32">
+    <div class="container">
+      <div class="text-center mb-16 md:mb-24">
+        <h1 class="text-4xl md:text-6xl font-bold text-black leading-tight mb-6 tracking-tight">
+          Seamless Event Experiences
+        </h1>
+        <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+          With hundreds of events managed and over a million guests registered, our platform continues to deliver reliable event solutions
+        </p>
+      </div>
 
-    <div ref="imageGridRef" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 md:mb-24">
-      <div v-for="(photo, index) in bentoPhotos" :key="index"
-        class="h-[373px] w-full md:w-[286px] mx-auto relative rounded-[32px] overflow-hidden bg-gray-100 shadow-lg group">
-        <img :src="photo.url" :alt="photo.title"
-          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <div ref="imageGridRef" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div v-for="(photo, index) in bentoPhotos" :key="index"
+          class="h-[400px] w-full relative rounded-[40px] overflow-hidden bg-gray-100 shadow-xl group">
+          
+          <img :src="photo.url" :alt="photo.title"
+            class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 
-        <div class="absolute inset-0 bg-black/30"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60"></div>
 
-        <div class="relative h-full w-full flex flex-col items-center justify-center text-center px-4">
-          <p class="text-white text-sm font-medium mb-1">{{ photo.title }}</p>
-          <h2 class="text-white text-5xl md:text-6xl font-bold tracking-tight">
-            {{ photo.stats }}
-          </h2>
-        </div>
+          <div class="relative h-full w-full flex flex-col items-center justify-center text-center px-6">
+            <p class="text-white/80 text-sm font-medium mb-2 uppercase tracking-widest">{{ photo.title }}</p>
+            <h2 class="text-white text-6xl md:text-7xl font-bold tracking-tighter">
+              {{ photo.stats }}
+            </h2>
+          </div>
 
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[85%]">
-          <div class="bg-white/90 backdrop-blur-sm py-3 px-4 rounded-2xl shadow-sm text-center">
-            <p class="text-[11px] leading-snug text-gray-800">
-              <span class="font-bold">{{ photo.labelBold }}</span> {{ photo.desc }}
-            </p>
+          <div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-[85%]">
+            <div class="bg-white/95 backdrop-blur-md py-4 px-5 rounded-[24px] shadow-lg text-center">
+              <p class="text-xs md:text-sm leading-relaxed text-gray-900">
+                <span class="font-bold text-blue-600">{{ photo.labelBold }}</span> {{ photo.desc }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
-  </div>
+  </section>
 </template>

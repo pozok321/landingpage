@@ -4,7 +4,7 @@
     <Gallery />
     <Features />
     <Ticket />
-     <DownloadApp />
+    <DownloadApp />
     <Blog />
     <Partners />
     <Testimoni />

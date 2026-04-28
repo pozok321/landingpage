@@ -21,7 +21,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/global.css'],
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@nuxtjs/i18n'],
+  i18n: {
+    locales: ['en', 'id'],
+    defaultLocale: 'id',
+  },
   ssr: false,
   googleFonts: {
     families: {

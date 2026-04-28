@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^10.3.0",
     "@studio-freight/lenis": "^1.0.42",
     "axios": "^1.15.2",
     "boxicons": "^2.1.4",
