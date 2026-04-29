@@ -3,10 +3,11 @@
     <Hero />
     <Gallery />
     <Features />
-    <Ticket />
     <DownloadApp />
+    <Ticket />
     <Blog />
     <Partners />
+    <OnGoingEvent />
     <Testimoni />
     <Faq />
     <Footer />

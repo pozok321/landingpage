@@ -3,8 +3,9 @@
     ref,
     onMounted
   } from 'vue';
+import { routerKey } from 'vue-router';
+  const router = useRouter();
   const config = useRuntimeConfig();
-  // BASE_URL akan berisi https://apiportal.undangin.com dari .env Anda
   const BASE_URL = config.public.apiUrl;
 
   const api = useApi();
@@ -24,6 +25,12 @@
       console.error("Gagal mengambil blog:", error);
     }
   };
+
+const toPostDetails = (post) => {
+  if (post && post.slug) {
+    router.push('/blog/'+ post.slug);
+  } 
+};
 
   onMounted(() => {
     getBlog();
@@ -49,7 +56,7 @@
         <div v-for="(post, index) in getBlogData.posts" :key="post.post_id || index"
           class="bg-white rounded-[32px] p-4 shadow-sm hover:shadow-md transition-all duration-500 flex flex-col h-fit">
           <div class="overflow-hidden rounded-[24px] aspect-[4/3] mb-6">
-            <img v-if="post.featured_image" :src="post.featured_image"
+            <img v-if="post.featured_image" :src="post.featured_image" @click="toPostDetails(post)"
               :alt="post.alt_image || post.title" class="blog-image w-full h-full object-cover" />
           </div>
 

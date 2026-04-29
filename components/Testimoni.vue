@@ -35,7 +35,7 @@
 
             <div class="flex overflow-x-auto gap-8 pb-10 hide-scrollbar snap-x snap-mandatory">
                 <div v-for="(testi, index) in getTestimonialsData.testimonials" :key="index"
-                    class="flex-shrink-0 w-[85%] md:w-[calc(33.333%-1.35rem)] snap-center">
+                    class="flex-shrink-0 w-[85%] md:w-[calc(40%-1rem)] snap-center">
                     <div
                         class="bg-[#edeff3] h-full p-10 rounded-[40px] flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
                         <div>
