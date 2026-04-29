@@ -196,7 +196,7 @@
 
             <div class="mb-20">
                 <div v-if="activeTab === 'private'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div v-for="(plan, index) in pricingPlans" :key="index" class="border p-8 rounded-[2rem]"
+                    <div v-for="(plan, index) in pricingPlans" :key="index" class="pricing-card border p-8 rounded-[2rem]"
                         :class="plan.popular ? 'bg-[#FCF9EE] border-[#E2D276]' : 'bg-white border-gray-100'">
                         <h3 class="text-2xl font-bold text-center">{{ plan.name }}</h3>
                         <p class="text-center text-sm text-gray-500">{{ plan.limit }}</p>
@@ -210,7 +210,7 @@
 
                 <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     <div v-for="(plan, idx) in ticketingPlans" :key="idx"
-                        class="bg-white border-2 border-blue-50 p-10 rounded-[2.5rem] shadow-sm flex flex-col justify-between"
+                        class="bg-white border-2 border-blue-50 p-10 rounded-[2.5rem] pricing-card shadow-sm flex flex-col justify-between"
                         :class="{ 'bg-blue-50/30 border-blue-100': plan.isContact }">
                         <div>
                             <h3 class="text-2xl font-bold text-[#435B71] mb-8">{{ plan.name }}</h3>

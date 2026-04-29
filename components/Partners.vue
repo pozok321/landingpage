@@ -5,15 +5,21 @@
 
     const api = useApi()
     const getPartnersData = ref([])
+    const router = useRouter()  
 
     const getPartners = async () => {
-      api({
-          url: '/v1/frontpage/getpartners',
-          method: 'GET'
-      }).then((res) => {
-            getPartnersData.value = res.data
-      })
-  };
+  try {
+    const res = await api({
+        url: '/v1/frontpage/getpartners',
+        method: 'GET'
+    });
+    // Pastikan struktur data sesuai, misal res.data atau res.data.partners
+    getPartnersData.value = res.data;
+    console.log("Data partner berhasil diambil:", getPartnersData.value);
+  } catch (error) {
+    console.error("Gagal mengambil data partner:", error);
+  }
+};
 
   onMounted(() => {
       getPartners()
