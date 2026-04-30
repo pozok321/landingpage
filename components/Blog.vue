@@ -56,8 +56,12 @@ const toPostDetails = (post) => {
         <div v-for="(post, index) in getBlogData.posts" :key="post.post_id || index"
           class="bg-white rounded-[32px] p-4 shadow-sm hover:shadow-md transition-all duration-500 flex flex-col h-fit">
           <div class="overflow-hidden rounded-[24px] aspect-[4/3] mb-6">
-            <img v-if="post.featured_image" :src="post.featured_image" @click="toPostDetails(post)"
-              :alt="post.alt_image || post.title" class="blog-image w-full h-full object-cover" />
+            <nuxt-link v-if="post.featured_image" :to="'/blog/' + post.slug">
+              <img :src="post.featured_image" :alt="post.alt_image || post.title"
+                class="blog-image w-full h-full object-cover" />
+            </nuxt-link>
+            <!-- <img v-if="post.featured_image" :src="post.featured_image" @click="toPostDetails(post)"
+              :alt="post.alt_image || post.title" class="blog-image w-full h-full object-cover" /> -->
           </div>
 
           <div class="flex justify-between items-center mb-4 px-2">

@@ -7,6 +7,7 @@
     <Ticket />
     <Blog />
     <Partners />
+    <Portofolio />
     <OnGoingEvent />
     <Testimoni />
     <Faq />

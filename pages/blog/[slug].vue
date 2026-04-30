@@ -1,5 +1,4 @@
 <script setup>
-const { locale } = useI18n()
 const route = useRoute()
 const config = useRuntimeConfig()
 const api = useApi()
@@ -14,10 +13,11 @@ const relatedPosts = ref([
 const fetchBlogDetail = async () => {
   try {
     const res = await api({
-      url: `/v1/frontpage/getblogdetail?slug=${route.params.slug}&lang=${locale.value}`,
-      method: 'GET'
+      url: `/v1/frontpage/getpostdetails?slug=${route.params.slug}`,
+      // method: 'GET'
     })
     blog.value = res.data
+    consoole.log('Blog Detail:', blog.value)
   } catch (error) {
     console.error("Gagal mengambil detail blog:", error)
   }
@@ -31,7 +31,6 @@ onMounted(() => {
 <template>
   <section class="py-12 md:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
-      
       <div class="mb-8">
         <span class="px-4 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full uppercase">Insight</span>
         <div class="mt-4 text-gray-400 text-sm">
@@ -52,7 +51,6 @@ onMounted(() => {
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-        
         <div class="lg:col-span-8">
           <article class="prose prose-lg max-w-none text-gray-600 leading-relaxed">
             <p class="mb-6">
@@ -93,8 +91,8 @@ onMounted(() => {
             </button>
           </div>
         </aside>
-
       </div>
     </div>
   </section>
+  <Footer/>
 </template>
