@@ -135,37 +135,47 @@
   }
 
   onMounted(() => {
-    if (process.client) {
-      gsap.registerPlugin(ScrollTrigger)
-      window.addEventListener('scroll', () => {
-        isScrolled.value = window.scrollY > 50
-      })
-      window.addEventListener('click', handleClickOutside)
+  if (process.client) {
+    gsap.registerPlugin(ScrollTrigger)
+    
+    window.addEventListener('scroll', () => {
+      isScrolled.value = window.scrollY > 50
+    })
+    window.addEventListener('click', handleClickOutside)
 
-      ScrollTrigger.create({
-        trigger: "section",
-        start: "top top",
-        endTrigger: "section",
-        end: "bottom top",
-        onLeave: () => {
-          gsap.to(navRef.value, {
-            yPercent: -120,
-            duration: 0.4,
-            ease: "power2.inOut",
-            overwrite: "auto"
-          })
-        },
-        onEnterBack: () => {
-          gsap.to(navRef.value, {
-            yPercent: 0,
-            duration: 0.4,
-            ease: "power2.out",
-            overwrite: "auto"
-          })
-        }
-      })
-    }
-  })
+    // Gunakan nextTick agar Vue selesai merender elemen v-if
+    nextTick(() => {
+      const target = document.querySelector("section")
+      
+      // Hanya jalankan ScrollTrigger jika elemen ditemukan
+      if (target) {
+        ScrollTrigger.create({
+          trigger: target,
+          start: "top top",
+          end: "bottom top",
+          onLeave: () => {
+            gsap.to(navRef.value, {
+              yPercent: -120,
+              duration: 0.4,
+              ease: "power2.inOut",
+              overwrite: "auto"
+            })
+          },
+          onEnterBack: () => {
+            gsap.to(navRef.value, {
+              yPercent: 0,
+              duration: 0.4,
+              ease: "power2.out",
+              overwrite: "auto"
+            })
+          }
+        })
+      } else {
+        console.warn("GSAP: Element 'section' tidak ditemukan di halaman ini.")
+      }
+    })
+  }
+})
 
   onUnmounted(() => {
     if (process.client) {

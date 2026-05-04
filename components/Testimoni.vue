@@ -41,7 +41,7 @@
                         <div>
                             <i class="bx bxs-quote-left text-5xl text-[#32435d] mb-6 opacity-80"></i>
                             <p class="text-[#32435d] text-base leading-relaxed mb-8 italic">
-                                "{{ testi.message }}"
+                                "{{ testi.testimonial_text }}"
                             </p>
                         </div>
 

@@ -203,7 +203,10 @@
                         <div class="border-t border-dashed my-6"></div>
                         <div class="text-center">
                             <p class="font-bold text-xl">{{ plan.price }}</p>
-                            <button class="mt-4 text-blue-500 font-bold">Unlock Plan →</button>
+                            <button v-if="plan.popular == true"
+                                class="mt-4 text-white font-bold bg-[#c6b603] px-6 py-3 rounded-[1rem]"><a href="http://s.id/WhatsappUndangin" target="_blank" rel="noopener noreferrer">Unlock now
+                                    →</a></button>
+                            <button v-else class="mt-4 text-blue-500 font-bold"><a href="http://s.id/WhatsappUndangin" target="_blank" rel="noopener noreferrer">Unlock Plan →</a></button>
                         </div>
                     </div>
                 </div>
@@ -230,7 +233,8 @@
                             <button
                                 :class="plan.isContact ? 'bg-blue-600 text-white w-full py-4' : 'text-blue-600 font-bold'"
                                 class="rounded-full transition-all flex items-center justify-center gap-2">
-                                {{ plan.buttonText }} <i class='bx bx-right-arrow-alt'></i>
+                                <a href="http://s.id/WhatsappUndangin" target="_blank" rel="noopener noreferrer">{{ plan.buttonText }} </a>
+                                <i class='bx bx-right-arrow-alt'></i>
                             </button>
                         </div>
                     </div>

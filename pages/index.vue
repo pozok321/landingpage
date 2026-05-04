@@ -2,13 +2,15 @@
   <main>
     <Hero />
     <Gallery />
-    <Features />
-    <DownloadApp />
+    <WhyChooseUs />
     <Ticket />
+    <DownloadApp />
+    <FeaturedIn /> 
+    <Portofolio />
+    <Testimoni />
+    <OnGoingEvent />
     <Blog />
     <Partners />
-    <OnGoingEvent />
-    <Testimoni />
     <Faq />
     <Footer />
   </main>

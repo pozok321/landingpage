@@ -5,7 +5,9 @@
         onMounted
     } from 'vue'
 
-    const { locale } = useI18n()
+    const {
+        locale
+    } = useI18n()
     const api = useApi()
     const getOnGoingEvents = ref([])
     const getOnGoingEventsData = async () => {
@@ -16,6 +18,14 @@
             getOnGoingEvents.value = res.data
         })
     };
+
+    const goToTicket = (url) => {
+  if (url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } else {
+    alert("Maaf, link tiket belum tersedia.");
+  }
+};
 
     onMounted(() => {
         getOnGoingEventsData()
@@ -40,15 +50,16 @@
                 <div v-for="event in getOnGoingEvents.posts" :key="event.id"
                     class="flex-shrink-0 w-[90%] md:w-[1000px] sm:w-[100%] snap-center">
                     <div
-                        class="bg-white border border-gray-100 rounded-[32px] overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-xl transition-all duration-500 h-full">
+                        class="bg-white border border-gray-100 overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-xl transition-all duration-500 h-full">
                         <div class="md:w-1/2 h-64 md:h-auto overflow-hidden">
                             <img :src="event.poster" :alt="event.name"
-                                class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700" />
+                                class="w-full h-full transform hover:scale-110 transition-transform duration-700" />
                         </div>
 
                         <div class="md:w-1/2 p-8 md:p-10 flex flex-col">
                             <div>
-                                <h3 class="text-3xl md:text-4xl font-bold text-[#273448] mb-4">{{ event.name }}</h3>
+                                <h3 class="text-3xl md:text-4xl font-bold text-[#273448] mb-4">{{ event.event_name }}
+                                </h3>
                                 <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-6">
                                     Explore the main programs at Franchise & License Expo Indonesia (FLEI),
                                     including exhibitions, business conferences, seminars, and business matching.
@@ -57,21 +68,19 @@
                                 <div class="space-y-3">
                                     <div class="flex items-center gap-3 text-gray-500">
                                         <i class='bx bx-map text-xl'></i>
-                                        <span class="text-sm font-medium">Jakarta International Expo</span>
+                                        <span class="text-sm font-medium">{{event.venue_address}}</span>
                                     </div>
                                     <div class="flex items-center gap-3 text-gray-500">
                                         <i class='bx bx-calendar text-xl'></i>
-                                        <span class="text-sm font-medium">10-12 May 2024</span>
+                                        <span class="text-sm font-medium">{{event.event_date}}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="mt-8">
-                                <button
-                                    class="w-full bg-[#273448] text-white py-4 rounded-2xl font-bold text-lg hover:bg-[#1e293a] transition-colors shadow-lg shadow-gray-200">
-                                    Get Ticket
-                                </button>
-                            </div>
+                            <button @click="goToTicket(event.ticketbox_url)"
+                                class="mt-4 w-full bg-[#273448] text-white py-4 rounded-2xl font-bold text-lg hover:bg-[#1e293a] transition-colors shadow-lg shadow-gray-200">
+                                Get Ticket
+                            </button>
                         </div>
 
                     </div>
