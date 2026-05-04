@@ -12,7 +12,7 @@
     const getOnGoingEvents = ref([])
     const getOnGoingEventsData = async () => {
         api({
-            url: '/v1/frontpage/geteventlist?lang{locale.value}',
+            url: '/v1/frontpage/geteventlist',
             method: 'GET'
         }).then((res) => {
             getOnGoingEvents.value = res.data

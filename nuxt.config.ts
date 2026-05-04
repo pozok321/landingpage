@@ -36,6 +36,8 @@ export default defineNuxtConfig({
     preconnect: true,
     preload: true,
     download: true, // Download font agar host sendiri (lebih cepat)
+  },nitro: {
+    preset: 'netlify'
   }
 
   

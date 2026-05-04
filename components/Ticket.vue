@@ -196,14 +196,8 @@
 
             <div class="mb-20">
                 <div v-if="activeTab === 'private'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div v-for="(plan, index) in pricingPlans" :key="index" class="border p-8 rounded-[2rem] relative"
-                        :class="plan.popular ? 'bg-[#FCF9EE] border-[#E2D276]' : 'bg-white border-gray-100 '">
-                        <div v-if="plan.popular == true" class="">
-                            <button v-if="plan.popular == true"
-                                class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#c6b603] text-white text-xs font-bold rounded-[1rem] px-4 py-2"><i
-                                    class="bx bx-star"></i> Popular</button>
-                        </div>
-
+                    <div v-for="(plan, index) in pricingPlans" :key="index" class="pricing-card border p-8 rounded-[2rem]"
+                        :class="plan.popular ? 'bg-[#FCF9EE] border-[#E2D276]' : 'bg-white border-gray-100'">
                         <h3 class="text-2xl font-bold text-center">{{ plan.name }}</h3>
                         <p class="text-center text-sm text-gray-500">{{ plan.limit }}</p>
                         <div class="border-t border-dashed my-6"></div>
@@ -219,7 +213,7 @@
 
                 <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     <div v-for="(plan, idx) in ticketingPlans" :key="idx"
-                        class="bg-white border-2 border-blue-50 p-10 rounded-[2.5rem] shadow-sm flex flex-col justify-between"
+                        class="bg-white border-2 border-blue-50 p-10 rounded-[2.5rem] pricing-card shadow-sm flex flex-col justify-between"
                         :class="{ 'bg-blue-50/30 border-blue-100': plan.isContact }">
                         <div>
                             <h3 class="text-2xl font-bold text-[#435B71] mb-8">{{ plan.name }}</h3>
