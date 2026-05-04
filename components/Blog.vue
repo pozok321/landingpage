@@ -1,44 +1,59 @@
 <script setup>
   import {
     ref,
-    onMounted
+    onMounted,
+    computed
   } from 'vue';
-import { routerKey } from 'vue-router';
-  const router = useRouter();
-  const config = useRuntimeConfig();
-  const BASE_URL = config.public.apiUrl;
 
+  const router = useRouter();
   const api = useApi();
-  const getBlogData = ref([]);
+  const visibleCount = ref(3);
+
+  // Inisialisasi dengan struktur yang jelas
+  const getBlogData = ref({
+    posts: []
+  });
 
   const getBlog = async () => {
     try {
       const res = await api({
         url: '/v1/frontpage/getblogpostlist',
-        method: 'GET'
+        method: 'get'
       });
 
-      // 2. Map data untuk menambahkan state isExpanded
-      const data = Array.isArray(res.data) ? res.data : [];
-      getBlogData.value = res.data
+      console.log("Full Res:", res); // LIHAT INI DI KONSOL
+
+      // Jika di konsol muncul { data: { posts: [...] } }
+      if (res ?.data ?.posts) {
+        getBlogData.value = res.data;
+      }
+      // Jika di konsol muncul { posts: [...] } langsung
+      else if (res ?.posts) {
+        getBlogData.value = res;
+      }
     } catch (error) {
       console.error("Gagal mengambil blog:", error);
     }
   };
 
-const toPostDetails = (post) => {
-  if (post && post.slug) {
-    router.push('/blog/'+ post.slug);
-  } 
-};
+  const displayedPosts = computed(() => {
+    // Tambahkan log untuk melihat kapan computed ini berjalan
+    const items = getBlogData.value ?.posts || [];
+    console.log("Computing posts:", items.length);
+    return items.slice(0, visibleCount.value);
+  });
+
+  const hasMore = computed(() => {
+    return (getBlogData.value ?.posts ?.length || 0) > visibleCount.value;
+  });
+
+  const showMore = () => {
+    visibleCount.value += 3;
+  };
 
   onMounted(() => {
     getBlog();
   });
-
-  const toggleExpand = (post) => {
-    post.isExpanded = !post.isExpanded;
-  };
 </script>
 
 <template>
@@ -53,21 +68,19 @@ const toPostDetails = (post) => {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-        <div v-for="(post, index) in getBlogData.posts" :key="post.post_id || index"
+        <div v-for="(post, index) in displayedPosts" :key="post.post_id || index"
           class="bg-white rounded-[32px] p-4 shadow-sm hover:shadow-md transition-all duration-500 flex flex-col h-fit">
           <div class="overflow-hidden rounded-[24px] aspect-[4/3] mb-6">
             <nuxt-link v-if="post.featured_image" :to="'/blog/' + post.slug">
               <img :src="post.featured_image" :alt="post.alt_image || post.title"
                 class="blog-image w-full h-full object-cover" />
             </nuxt-link>
-            <!-- <img v-if="post.featured_image" :src="post.featured_image" @click="toPostDetails(post)"
-              :alt="post.alt_image || post.title" class="blog-image w-full h-full object-cover" /> -->
           </div>
 
           <div class="flex justify-between items-center mb-4 px-2">
             <span
               class="px-4 py-1 bg-blue-100 text-blue-600 text-[10px] font-bold rounded-full uppercase">{{ post.category }}</span>
-            <span class="text-gray-400 text-xs italic">{{ post.slug }}</span>
+            <span class="text-black text-sm italic">{{ post.published_at }}</span>
           </div>
 
           <div class="px-2 flex-grow">
@@ -84,20 +97,14 @@ const toPostDetails = (post) => {
                 </p>
               </div>
             </transition>
-
-            <!-- <button
-              class="block mt-4 text-blue-600 font-bold text-sm hover:text-blue-800 transition-colors underline decoration-2 underline-offset-4">
-              {{ post.isExpanded ? 'Show Less' : 'Read More' }}
-            </button> -->
           </div>
         </div>
       </div>
-
-      <div class="flex flex-col items-center gap-8">
+      <div class="text-center">
         <button
-          class="px-12 py-4 bg-[#212E42] text-white rounded-full font-bold hover:bg-[#2c3d58] transition-all transform hover:scale-105">
-          Show More
-        </button>
+        class="px-10 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F] text-center align-middle">
+        Show More
+      </button> 
       </div>
     </div>
   </section>

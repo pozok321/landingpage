@@ -196,14 +196,23 @@
 
             <div class="mb-20">
                 <div v-if="activeTab === 'private'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div v-for="(plan, index) in pricingPlans" :key="index" class="border p-8 rounded-[2rem]"
-                        :class="plan.popular ? 'bg-[#FCF9EE] border-[#E2D276]' : 'bg-white border-gray-100'">
+                    <div v-for="(plan, index) in pricingPlans" :key="index" class="border p-8 rounded-[2rem] relative"
+                        :class="plan.popular ? 'bg-[#FCF9EE] border-[#E2D276]' : 'bg-white border-gray-100 '">
+                        <div v-if="plan.popular == true" class="">
+                            <button v-if="plan.popular == true"
+                                class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#c6b603] text-white text-xs font-bold rounded-[1rem] px-4 py-2"><i
+                                    class="bx bx-star"></i> Popular</button>
+                        </div>
+
                         <h3 class="text-2xl font-bold text-center">{{ plan.name }}</h3>
                         <p class="text-center text-sm text-gray-500">{{ plan.limit }}</p>
                         <div class="border-t border-dashed my-6"></div>
                         <div class="text-center">
                             <p class="font-bold text-xl">{{ plan.price }}</p>
-                            <button class="mt-4 text-blue-500 font-bold">Unlock Plan →</button>
+                            <button v-if="plan.popular == true"
+                                class="mt-4 text-white font-bold bg-[#c6b603] px-6 py-3 rounded-[1rem]"><a href="http://s.id/WhatsappUndangin" target="_blank" rel="noopener noreferrer">Unlock now
+                                    →</a></button>
+                            <button v-else class="mt-4 text-blue-500 font-bold"><a href="http://s.id/WhatsappUndangin" target="_blank" rel="noopener noreferrer">Unlock Plan →</a></button>
                         </div>
                     </div>
                 </div>
@@ -230,7 +239,8 @@
                             <button
                                 :class="plan.isContact ? 'bg-blue-600 text-white w-full py-4' : 'text-blue-600 font-bold'"
                                 class="rounded-full transition-all flex items-center justify-center gap-2">
-                                {{ plan.buttonText }} <i class='bx bx-right-arrow-alt'></i>
+                                <a href="http://s.id/WhatsappUndangin" target="_blank" rel="noopener noreferrer">{{ plan.buttonText }} </a>
+                                <i class='bx bx-right-arrow-alt'></i>
                             </button>
                         </div>
                     </div>
