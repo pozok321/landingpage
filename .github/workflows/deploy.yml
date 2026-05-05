@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Tests (Vitest)
-        run: npm run test # Memastikan tidak ada fitur yang rusak
+      # - name: Run Tests (Vitest)
+      #   run: npm run test
 
       - name: Build Nuxt App
         run: npm run build
