@@ -59,9 +59,9 @@
           supported by reliable technology and a team committed to helping you succeed at every stage.
         </p>
         
-        <button class="px-10 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F] transition-all transform hover:scale-105 shadow-xl shadow-gray-200">
+        <a href="https://private.undangin.com/reserve/26517/event" target="_blank" rel="noopener noreferrer" class="inline-block mt-4 px-10 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F] transition-all transform hover:scale-105 shadow-xl shadow-gray-200">
           Become Our Partner
-        </button>
+        </a>
       </div>
 
     </div>

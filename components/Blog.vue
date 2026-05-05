@@ -69,7 +69,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
         <div v-for="(post, index) in displayedPosts" :key="post.post_id || index"
-          class="bg-white rounded-[32px] p-4 shadow-sm hover:shadow-md transition-all duration-500 flex flex-col h-fit">
+          class=" h-full p-10 rounded-[40px] flex flex-col border border-black-800 justify-between shadow-sm hover:shadow-md transition-shadow">
+          
           <div class="overflow-hidden rounded-[24px] aspect-[4/3] mb-6">
             <nuxt-link v-if="post.featured_image" :to="'/blog/' + post.slug">
               <img :src="post.featured_image" :alt="post.alt_image || post.title"
@@ -101,10 +102,10 @@
         </div>
       </div>
       <div class="text-center">
-        <button
+        <a href="/blog/" 
         class="px-10 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F] text-center align-middle">
         Show More
-      </button> 
+      </a> 
       </div>
     </div>
   </section>

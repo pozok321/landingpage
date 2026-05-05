@@ -59,8 +59,6 @@
 <template>
   <section v-if="blog" class="py-12 md:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
-      
-      <!-- Header Artikel (Kategori, Tanggal, Judul, Gambar) -->
       <div class="mb-8">
         <span class="px-4 py-1 bg-blue-100 text-blue-600 text-xs font-bold rounded-full uppercase">
           {{ blog.category || 'Article' }}
@@ -83,7 +81,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
         
         <!-- KOLOM KIRI: Content Utama (8 Kolom) -->
-        <div class="lg:col-span-8">
+        <div class="lg:col-span-12">
           <article class="prose prose-lg max-w-none text-gray-600 leading-relaxed" v-html="blog.content">
           </article>
           
@@ -94,7 +92,7 @@
         </div>
 
         <!-- KOLOM KANAN: Sidebar (4 Kolom) -->
-        <aside class="lg:col-span-4">
+        <!-- <aside class="lg:col-span-4">
           <div class="sticky top-32">
             <h3 class="text-2xl font-bold text-[#273448] mb-8">Another Insight for you</h3>
             
@@ -124,13 +122,12 @@
               </div>
             </div>
 
-            <!-- Tombol Find More -->
             <button @click="router.push('/blog')" 
                     class="w-full mt-8 py-4 border-2 border-gray-100 rounded-2xl font-bold text-gray-400 hover:bg-gray-50 hover:text-[#273448] hover:border-[#273448] transition-all">
               Find more articles
             </button>
           </div>
-        </aside>
+        </aside> -->
 
       </div> <!-- END GRID -->
     </div>
