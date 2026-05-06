@@ -8,6 +8,7 @@
   const router = useRouter();
   const api = useApi();
   const visibleCount = ref(3);
+  const currentLang = localStorage.getItem('user-locale')
 
   // Inisialisasi dengan struktur yang jelas
   const getBlogData = ref({
@@ -20,15 +21,9 @@
         url: '/v1/frontpage/getblogpostlist',
         method: 'get'
       });
-
-      console.log("Full Res:", res); // LIHAT INI DI KONSOL
-
-      // Jika di konsol muncul { data: { posts: [...] } }
       if (res ?.data ?.posts) {
         getBlogData.value = res.data;
-      }
-      // Jika di konsol muncul { posts: [...] } langsung
-      else if (res ?.posts) {
+      } else if (res ?.posts) {
         getBlogData.value = res;
       }
     } catch (error) {
@@ -39,7 +34,6 @@
   const displayedPosts = computed(() => {
     // Tambahkan log untuk melihat kapan computed ini berjalan
     const items = getBlogData.value ?.posts || [];
-    console.log("Computing posts:", items.length);
     return items.slice(0, visibleCount.value);
   });
 
@@ -47,9 +41,9 @@
     return (getBlogData.value ?.posts ?.length || 0) > visibleCount.value;
   });
 
-  const showMore = () => {
-    visibleCount.value += 3;
-  };
+  // const showMore = () => {
+  //   visibleCount.value += 3;
+  // };
 
   onMounted(() => {
     getBlog();
@@ -58,8 +52,7 @@
 
 <template>
   <section class="py-24 px-6">
-    <div class="max-w-7xl mx-auto">
-
+    <div class="max-w-7xl mx-auto container">
       <div class="text-center mb-16">
         <h2 class="text-5xl md:text-6xl font-sans font-bold text-[#1A1A1A] mb-4 tracking-tighter">
           Blog and Article
@@ -70,9 +63,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
         <div v-for="(post, index) in displayedPosts" :key="post.post_id || index"
           class=" h-full p-10 rounded-[40px] flex flex-col border border-black-800 justify-between shadow-sm hover:shadow-md transition-shadow">
-          
+
           <div class="overflow-hidden rounded-[24px] aspect-[4/3] mb-6">
-            <nuxt-link v-if="post.featured_image" :to="'/blog/' + post.slug">
+            <!-- PERBAIKAN: Gunakan encodeURIComponent agar karakter & dan : tidak merusak router -->
+            <nuxt-link v-if="post.featured_image" :to="'/blog/detail/' + post.slug">
               <img :src="post.featured_image" :alt="post.alt_image || post.title"
                 class="blog-image w-full h-full object-cover" />
             </nuxt-link>
@@ -85,27 +79,22 @@
           </div>
 
           <div class="px-2 flex-grow">
-            <h3 class="text-xl font-bold text-[#1A1A1A] mb-3 leading-tight">{{ post.title }}</h3>
+            <nuxt-link :to="'/blog/detail/' + post.slug">
+              <h3 class="text-xl font-bold text-[#1A1A1A] mb-3 leading-tight hover:text-blue-600 cursor-pointer">
+                {{ post.title }}
+              </h3>
+            </nuxt-link>
 
-            <p class="text-gray-500 text-sm leading-relaxed inline">
+            <p class="text-gray-500 text-sm leading-relaxed line-clamp-2">
               {{ post.slug }}
             </p>
-
-            <transition name="expand">
-              <div v-if="post.isExpanded" class="overflow-hidden">
-                <p class="text-gray-500 text-sm leading-relaxed mt-2 pt-2 border-t border-gray-100">
-                  {{ post.slug }}
-                </p>
-              </div>
-            </transition>
           </div>
         </div>
       </div>
       <div class="text-center">
-        <a href="/blog/" 
-        class="px-10 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F] text-center align-middle">
-        Show More
-      </a> 
+        <a href="/blog/" class="px-10 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F]">
+          Show More
+        </a>
       </div>
     </div>
   </section>

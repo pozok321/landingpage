@@ -94,7 +94,7 @@
           class="group flex flex-col h-full bg-white p-4 rounded-[40px] border border-gray-50 hover:shadow-xl transition-all duration-300">
           
           <div class="overflow-hidden rounded-[30px] aspect-[4/3] mb-6">
-            <nuxt-link :to="'/blog/' + post.slug">
+            <nuxt-link :to="'/blog/detail/' + post.slug">
               <img :src="post.featured_image" :alt="post.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             </nuxt-link>
           </div>
@@ -108,17 +108,11 @@
             <h3 class="text-xl font-bold text-[#1A1A1A] mb-3 leading-tight line-clamp-2">{{ post.title }}</h3>
             <p class="text-gray-500 text-sm mb-6 line-clamp-2">{{ post.excerpt || 'Learn more about event management...' }}</p>
             
-            <nuxt-link :to="'/blog/' + post.slug" class="mt-auto text-blue-600 font-bold text-sm border-b-2 border-blue-600 w-max pb-0.5">
+            <nuxt-link :to="'/blog/detail/' + post.slug" class="mt-auto text-blue-600 font-bold text-sm border-b-2 border-blue-600 w-max pb-0.5">
               Read More
             </nuxt-link>
           </div>
         </div>
-      </div>
-
-      <div v-if="hasMore" class="text-center">
-        <button @click="showMore" class="px-12 py-4 bg-[#2D394B] text-white rounded-full font-bold hover:bg-[#1A232F] transition-all">
-          Show More
-        </button> 
       </div>
     </div>
   </section>

@@ -1,6 +1,6 @@
 <template>
     <section class="bg-white py-20 px-4">
-        <div class="max-w-7xl mx-auto">
+        <div class="max-w-7xl mx-auto container">
             <!-- Image Banner Section -->
             <div class="w-full mb-12 overflow-hidden rounded-3xl shadow-xl">
                 <img src="/public/images/undangin-smartchoise.png"

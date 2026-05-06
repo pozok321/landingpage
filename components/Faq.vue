@@ -4,8 +4,6 @@ import { ref, onMounted, computed } from 'vue'; // Tambahkan computed
 const api = useApi();
 const activeIndex = ref(null);
 const getFaqsData = ref({ faqs: [] });
-
-// 1. FILTER DATA: Hanya ambil FAQ yang punya pertanyaan & jawaban valid
 const filteredFaqs = computed(() => {
   const items = getFaqsData.value?.faqs || [];
   return items.filter(faq => 
@@ -38,9 +36,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-24 px-6 bg-white">
-    <div class="max-w-4xl mx-auto">
-
+  <section class="py-24 px-4 bg-white">
+    <div class="max-w-7xl mx-auto container">
       <div class="text-center mb-16">
         <h2 class="text-4xl md:text-5xl font-bold text-[#273448] mb-4 tracking-tighter">
           Frequently Asked Questions
@@ -51,11 +48,11 @@ onMounted(() => {
       </div>
 
       <!-- 2. SCROLL FIX: Gunakan overflow-y-auto dan tambahkan padding kanan (pr-4) -->
-      <div class="pr-4 overflow-y-auto max-h-[550px] custom-scrollbar">
+      <div class="pr-4 overflow-y-auto max-h-[400px] custom-scrollbar">
         <div class="space-y-4">
           <!-- Render hasil filter, bukan data mentah -->
           <div v-for="faq in filteredFaqs" :key="faq.faq_id"
-            class="bg-[#edeff3] rounded-[2rem] overflow-hidden transition-all duration-300 border border-transparent hover:border-gray-200">
+            class="bg-[#edeff3] rounded-[1rem] overflow-hidden transition-all duration-300 border border-transparent hover:border-gray-200">
             
             <button @click="toggleFaq(faq.faq_id)"
               class="w-full flex justify-between items-center p-8 text-left hover:bg-[#e5e7eb] transition-colors">

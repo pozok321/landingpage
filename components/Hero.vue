@@ -43,25 +43,18 @@
 </script>
 
 <template>
-  <!-- h-screen memastikan elemen memenuhi satu layar penuh -->
   <section ref="heroSection" class="relative h-screen bg-white overflow-hidden z-20">
-    
-    <!-- innerContainer yang akan kita beri efek zoom -->
     <div ref="innerContainer" class="relative w-full h-full overflow-hidden flex items-center will-change-transform">
-      
-      <!-- Background Image: Pastikan object-cover agar tidak gepeng saat zoom -->
       <div class="absolute inset-0 z-10">
         <img 
           src="/images/landingpage.jpg" 
           class="w-full h-full object-cover"
           alt="Undangin Landing Page"
         />
-        <!-- Overlay gelap opsional agar teks tetap terbaca di awal -->
         <div class="absolute inset-0 bg-black/10"></div>
       </div>
       
       <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-8 md:px-20 relative z-30">
-        <!-- Area Konten Teks -->
         <div ref="content" class="flex flex-col items-start text-left">
           <span class="inline-block px-4 py-1.5 mb-8 text-xs bg-white/80 backdrop-blur-sm tracking-[0.1em] border border-black/10 rounded-full text-black font-bold">
             LEADING GUEST SOLUTION

@@ -13,9 +13,7 @@
         url: '/v1/frontpage/getpartners',
         method: 'GET'
     });
-    // Pastikan struktur data sesuai, misal res.data atau res.data.partners
     getPartnersData.value = res.data;
-    console.log("Data partner berhasil diambil:", getPartnersData.value);
   } catch (error) {
     console.error("Gagal mengambil data partner:", error);
   }

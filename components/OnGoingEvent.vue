@@ -33,9 +33,8 @@
 </script>
 
 <template>
-    <section class="py-24 overflow-hidden bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-
+    <section class="py-24 px-4 overflow-hidden bg-white">
+        <div class="max-w-7xl mx-auto container">
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-bold text-[#273448] mb-6 tracking-tight">
                     Find Events That Are Live Right Now
@@ -53,10 +52,10 @@
                         class="bg-white border border-gray-100 overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-xl transition-all duration-500 h-full">
                         <div class="md:w-1/2 h-64 md:h-auto overflow-hidden">
                             <img :src="event.poster" :alt="event.name"
-                                class="w-full h-full transform hover:scale-110 transition-transform duration-700" />
+                                class="w-full h-full" />
                         </div>
 
-                        <div class="md:w-1/2 p-8 md:p-10 flex flex-col">
+                        <div class="md:w-1/2 p-8 md:p-10 flex flex-col m-auto">
                             <div>
                                 <h3 class="text-3xl md:text-4xl font-bold text-[#273448] mb-4">{{ event.event_name }}
                                 </h3>
@@ -103,5 +102,11 @@
     .hide-scrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;
+    }
+    .image-cover{
+        object-fit: cover;
+        background-position: center;
+        width: 100%;
+        height: 100%;
     }
 </style>

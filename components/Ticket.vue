@@ -173,7 +173,7 @@
 
 <template>
     <section class="py-20 px-6 bg-white font-sans text-[#2D394D]">
-        <div class="max-w-7xl mx-auto">
+        <div class="max-w-7xl mx-auto container">
 
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                 <div class="max-w-xl">

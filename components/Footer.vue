@@ -1,6 +1,6 @@
 <template>
-  <footer class="bg-[#273448] text-white py-14 px-8 md:px-20 font-inter">
-    <div class="max-w-7xl mx-auto">
+  <footer class="bg-[#273448] text-white py-24 px-4 font-inter">
+    <div class="max-w-7xl mx-auto container">
       
       <div class="flex flex-col md:flex-row justify-between items-center mb-8">
   <div class="mb-6 md:mb-0">

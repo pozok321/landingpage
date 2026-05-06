@@ -11,6 +11,7 @@
     <OnGoingEvent />
     <Blog />
     <Partners />
+    <Video />
     <Faq />
     <Footer />
   </main>

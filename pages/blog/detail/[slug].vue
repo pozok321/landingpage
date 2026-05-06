@@ -10,17 +10,11 @@
 
   const fetchBlogDetail = async () => {
     try {
-      // Ambil slug dari params, tapi jika terpotong, kita ambil manual dari fullPath
       let slugParam = route.params.slug;
-
-      // Logika tambahan: jika URL asli mengandung '?', route.params.slug biasanya terpotong.
-      // Kita ambil string setelah '/blog/' secara manual untuk memastikan keutuhan.
       const fullPath = route.fullPath;
-      if (fullPath.includes('/blog/')) {
-        slugParam = fullPath.split('/blog/')[1];
+      if (fullPath.includes('./detail/')) {
+        slugParam = fullPath.split('./detail/')[1];
       }
-
-      console.log("Slug yang akan dikirim:", slugParam);
 
       const res = await api({
         url: '/v1/frontpage/getpostdetails',

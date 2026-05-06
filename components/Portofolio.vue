@@ -1,7 +1,6 @@
 <template>
   <section class="py-20 bg-white">
-    <div class="container mx-auto px-8 md:px-20">
-      <!-- Grid Utama -->
+    <div class="max-w-7xl mx-auto container">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         <!-- Kolom 1: Header Teks -->

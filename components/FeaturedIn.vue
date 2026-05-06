@@ -1,7 +1,6 @@
 <template>
   <section class="bg-[#2D3A4D] py-20 px-4">
-    <div class="max-w-7xl mx-auto">
-      <!-- Header Section -->
+    <div class="max-w-7xl mx-auto container">
       <div class="text-center mb-16">
         <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 uppercase tracking-wider">
           As Featured In

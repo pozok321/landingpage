@@ -74,7 +74,7 @@
 
 <template>
   <div class="relative overflow-hidden bg-black w-full h-screen group">
-    <div class="flex w-full h-full items-center">
+    <div class="flex w-full h-full items-center container">
       <section class="slide-item w-full h-full flex-shrink-0 relative flex items-center justify-center bg-black">
         <div class="absolute inset-0">
           <img src="/images/fastsetup.png" class="w-full h-full object-cover opacity-50" alt="BG" />
