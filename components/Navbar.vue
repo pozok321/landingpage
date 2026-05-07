@@ -4,30 +4,23 @@
     isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
   ]">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
-      
-      <!-- Kiri: Logo & Desktop Menu -->
       <div class="flex items-center space-x-12">
         <nuxt-link to="/" class="flex items-center">
           <img src="/images/undangin-logo.png" alt="Undangin Logo"
             class="h-8 md:h-10 w-auto object-contain transition-all"
             :class="[isScrolled ? 'brightness-100' : 'brightness-0 invert']" />
         </nuxt-link>
-
-        <!-- Desktop Menu: Tetap hidden di mobile, flex di md (medium screen) -->
         <div :class="[
             'hidden md:flex space-x-8 font-medium transition-colors items-center',
             isScrolled ? 'text-gray-600' : 'text-white/90'
           ]">
-          <nuxt-link to="#" class="hover:text-blue-500 transition">Home</nuxt-link>
+          <nuxt-link to="/" class="hover:text-blue-500 transition">Home</nuxt-link>
           <nuxt-link to="#" class="hover:text-blue-500 transition">Services</nuxt-link>
           <nuxt-link to="#" class="hover:text-blue-500 transition">Portofolio</nuxt-link>
           <nuxt-link to="#" class="hover:text-blue-500 transition">Blog & Article</nuxt-link>
         </div>
       </div>
-
-      <!-- Kanan: Language & Hamburger -->
       <div class="flex items-center gap-4">
-        <!-- Language Dropdown (Tampil di semua device) -->
         <div class="relative" ref="dropdownRef">
           <button @click="isDropdownOpen = !isDropdownOpen"
             class="flex items-center gap-2 bg-black/5 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-black/10 hover:bg-black/10 transition-all text-[10px] md:text-xs font-bold"
@@ -38,8 +31,6 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-
-          <!-- Dropdown Transition (Tetap sama) -->
           <transition enter-active-class="transition duration-200 ease-out"
             enter-from-class="transform scale-95 opacity-0 -translate-y-2"
             enter-to-class="transform scale-100 opacity-100 translate-y-0"
@@ -61,8 +52,6 @@
             </div>
           </transition>
         </div>
-
-        <!-- Hamburger Button: Hanya muncul di mobile (hidden di md) -->
         <button @click="toggleMenu" 
           class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 z-[110]">
           <span :class="['w-6 h-0.5 transition-all duration-300', 
@@ -77,23 +66,18 @@
         </button>
       </div>
     </div>
-
-    <!-- Mobile Menu Overlay (Sudah ada di kode Anda) -->
     <div ref="menuOverlay"
       class="fixed top-0 right-0 h-screen w-[85%] md:w-[33%] bg-white z-[105] shadow-[-10px_0_30px_rgba(0,0,0,0.1)] translate-x-[100%] flex flex-col p-10 pt-32 space-y-6">
       <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Home</nuxt-link>
       <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Services</nuxt-link>
       <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Portofolio</nuxt-link>
       <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Blog & Article</nuxt-link>
-      
       <div class="pt-6">
         <button class="w-full bg-blue-600 text-white px-6 py-4 rounded-xl font-bold shadow-lg">
           Get Started
         </button>
       </div>
     </div>
-
-    <!-- Backdrop -->
     <div v-if="isMenuOpen" @click="toggleMenu" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[104]"></div>
   </nav>
 </template>
@@ -113,8 +97,6 @@
   const dropdownRef = ref(null)
 
   const { locale, setLocale } = useI18n()
-
-  // Fungsi untuk mengganti bahasa dan menyimpan ke LocalStorage
   const changeLanguage = (lang) => {
     if (typeof setLocale === 'function') {
       setLocale(lang)
@@ -150,7 +132,6 @@
 
   onMounted(() => {
     if (process.client) {
-      // --- LOGIKA INITIAL LANGUAGE (ID as Default) ---
       const savedLocale = localStorage.getItem('user-locale')
       if (savedLocale) {
         setLocale ? setLocale(savedLocale) : (locale.value = savedLocale)
@@ -159,8 +140,6 @@
         setLocale ? setLocale(defaultLang) : (locale.value = defaultLang)
         localStorage.setItem('user-locale', defaultLang)
       }
-
-      // --- LOGIKA SCROLL & GSAP ---
       gsap.registerPlugin(ScrollTrigger)
       
       const handleScroll = () => {
@@ -171,7 +150,6 @@
       window.addEventListener('click', handleClickOutside)
 
       nextTick(() => {
-        // Menggunakan target yang lebih spesifik agar tidak error di halaman tanpa <section>
         const target = document.querySelector("section")
         
         if (target && navRef.value) {

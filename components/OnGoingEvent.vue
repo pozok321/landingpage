@@ -1,5 +1,4 @@
 <script setup>
-    // Import computed secara eksplisit untuk memastikan reaktivitas berjalan
     import {
         ref,
         onMounted
@@ -20,12 +19,12 @@
     };
 
     const goToTicket = (url) => {
-  if (url) {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  } else {
-    alert("Maaf, link tiket belum tersedia.");
-  }
-};
+        if (url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        } else {
+            alert("Maaf, link tiket belum tersedia.");
+        }
+    };
 
     onMounted(() => {
         getOnGoingEventsData()
@@ -51,8 +50,7 @@
                     <div
                         class="bg-white border border-gray-100 overflow-hidden flex flex-col md:flex-row shadow-sm hover:shadow-xl transition-all duration-500 h-full">
                         <div class="md:w-1/2 h-64 md:h-auto overflow-hidden">
-                            <img :src="event.poster" :alt="event.name"
-                                class="w-full h-full" />
+                            <img :src="event.poster" :alt="event.name" class="w-full h-full" />
                         </div>
 
                         <div class="md:w-1/2 p-8 md:p-10 flex flex-col m-auto">
@@ -103,7 +101,8 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
-    .image-cover{
+
+    .image-cover {
         object-fit: cover;
         background-position: center;
         width: 100%;
