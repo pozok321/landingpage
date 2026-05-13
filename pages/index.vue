@@ -1,5 +1,6 @@
 <template>
   <main>
+    <Promo />
     <Hero />
     <Gallery />
     <WhyChooseUs />

@@ -8,7 +8,6 @@
   const router = useRouter();
   const api = useApi();
   const visibleCount = ref(3);
-  const currentLang = localStorage.getItem('user-locale')
 
   // Inisialisasi dengan struktur yang jelas
   const getBlogData = ref({
@@ -17,9 +16,13 @@
 
   const getBlog = async () => {
     try {
+      const currentLang = (process.client ? localStorage.getItem('user-locale') : 'id') || 'id';
       const res = await api({
         url: '/v1/frontpage/getblogpostlist',
-        method: 'get'
+        method: 'get',
+        params: {
+          lang: currentLang
+        }
       });
       if (res ?.data ?.posts) {
         getBlogData.value = res.data;
@@ -75,7 +78,7 @@
           <div class="flex justify-between items-center mb-4 px-2">
             <span
               class="px-4 py-1 bg-blue-100 text-blue-600 text-[10px] font-bold rounded-full uppercase">{{ post.category }}</span>
-            <span class="text-black text-sm italic">{{ post.published_at }}</span>
+            <span class="text-black text-sm italic">{{ post.published_at.split(' ')[0] }}</span>
           </div>
 
           <div class="px-2 flex-grow">
@@ -85,9 +88,9 @@
               </h3>
             </nuxt-link>
 
-            <p class="text-gray-500 text-sm leading-relaxed line-clamp-2">
+            <!-- <p class="text-gray-500 text-sm leading-relaxed line-clamp-2">
               {{ post.slug }}
-            </p>
+            </p> -->
           </div>
         </div>
       </div>

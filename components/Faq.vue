@@ -19,7 +19,8 @@ const toggleFaq = (id) => {
 
 const getFaq = async () => {
   try {
-    const res = await api({ url: '/v1/frontpage/getfaqs' });
+    const currentLang = (process.client ? localStorage.getItem('user-locale') : 'id') || 'id';
+    const res = await api({ url: '/v1/frontpage/getfaqs', params: { lang: currentLang } });
     if (res?.data?.faqs) {
       getFaqsData.value = res.data;
     } else if (res?.faqs) {

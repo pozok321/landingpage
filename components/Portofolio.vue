@@ -63,7 +63,7 @@
             A curated portfolio of events powered by Undangin, highlighting our commitment to quality, innovation, and seamless event management.
           </p>
         <NuxtLink :to="`/portofolio/`"
-          class="w-full md:w-max px-10 py-4 bg-[#2D3748] text-white rounded-full font-semibold hover:bg-slate-700 transition-colors">
+          class="w-full md:w-max px-10 py-4 bg-[#2D3748] text-white text-center rounded-full font-semibold hover:bg-slate-700 transition-colors">
           Portofolio Detail
         </NuxtLink>
         </div>

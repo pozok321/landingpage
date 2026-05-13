@@ -12,9 +12,13 @@
 
   const getBlog = async () => {
     try {
+      const currentLang = (process.client ? localStorage.getItem('user-locale') : 'id') || 'id';
       const res = await api({
         url: '/v1/frontpage/getblogpostlist',
-        method: 'get'
+        method: 'get',
+        params: {
+          lang: currentLang
+        } 
       });
       if (res?.data?.posts) {
         getBlogData.value = res.data;
@@ -44,10 +48,6 @@
     return totalFiltered > visibleCount.value;
   });
 
-  const showMore = () => {
-    visibleCount.value += 3;
-  };
-
   onMounted(() => {
     getBlog();
   });
@@ -64,12 +64,10 @@
         </h2>
         <p class="text-gray-500 text-lg mb-10">Explore expert ideas and useful guides for better event experiences.</p>
         
-        <!-- Search Bar (Placeholder sesuai desain) -->
         <div class="relative max-w-xl mx-auto mb-16">
           <input type="text" placeholder="Search for blog" class="w-full py-4 px-6 rounded-full border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
 
-        <!-- TOP PICKS FILTER -->
         <div class="space-y-6">
           <h3 class="text-lg font-bold text-gray-900">Top 3 Picks</h3>
           <div class="flex flex-wrap justify-center gap-3">
@@ -82,13 +80,11 @@
                 activeCategory === cat ? 'bg-[#2D394B] text-white shadow-lg' : 'bg-white text-gray-500 border border-gray-100 hover:bg-gray-50'
               ]"
             >
-              {{ cat }}
             </button>
           </div>
         </div>
       </div>
-
-      <!-- Grid Posts -->
+      
       <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
         <div v-for="(post, index) in filteredPosts" :key="post.post_id || index"
           class="group flex flex-col h-full bg-white p-4 rounded-[40px] border border-gray-50 hover:shadow-xl transition-all duration-300">

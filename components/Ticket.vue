@@ -18,13 +18,13 @@
         {
             name: 'Standard',
             limit: '50-100 Invitation',
-            price: 'Unlock Plan',
+            price: 'IDR 3.000.000',
             popular: false
         },
         {
             name: 'Plus',
             limit: '100-150 Invitation',
-            price: 'Unlock Plan',
+            price: 'IDR 4.125.000',
             popular: false
         },
         {
@@ -263,7 +263,7 @@
 
             <div class="space-y-6" v-if="activeTab === 'private'">
                 <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100">
-                    <h4 class="font-bold mb-6">Undangin Additional Services</h4>
+                    <h4 class="font-bold mb-6">Undangin Additional Services (Price Upon Request)</h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div class="flex gap-3">
                             <i class='bx bx-mobile-alt text-2xl text-blue-500'></i>

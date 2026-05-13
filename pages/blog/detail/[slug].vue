@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onMounted, watch, nextTick } from 'vue'
+  import { ref, onMounted, watch, nextTick, computed } from 'vue'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   const route = useRoute()
@@ -38,6 +38,7 @@
       console.error("Gagal mengambil detail blog:", error);
     }
   };
+  
 
   // --- BAGIAN PENTING: REAKTIVITAS BAHASA ---
   
@@ -56,6 +57,33 @@
   onMounted(() => {
     fetchBlogDetail()
   })
+
+const formattedContent = computed(() => {
+  if (!blog.value?.content) return ''
+
+  let content = blog.value.content
+
+  // 1. Perbaikan Link Website & Sosial Media (Mencegah localhost:3000/...)
+  // Kita cari link yang tidak diawali http atau https atau mailto
+  content = content.replace(/href="www\./g, 'href="https://www.')
+  
+  // KHUSUS INSTAGRAM: Jika ada link yang langsung menuju instagram.com
+  content = content.replace(/href="instagram\.com/g, 'href="https://instagram.com')
+
+  // 2. Pastikan semua link terbuka di tab baru agar user tidak meninggalkan website
+  content = content.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ')
+
+  // 3. Deteksi Email (@undangin.official jika itu email)
+  // Tapi hati-hati, jika @undangin.official adalah USERNAME Instagram, jangan gunakan mailto.
+  // Jika itu email (ada tanda @ dan domain .com/.id), gunakan ini:
+  const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+  
+  content = content.replace(emailRegex, (match) => {
+      return `<a href="mailto:${match}" class="text-blue-600 underline font-medium">${match}</a>`
+  });
+
+  return content
+})
 </script>
 
 <template>
@@ -81,8 +109,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
         <div class="lg:col-span-8">
-          <article class="prose prose-lg max-w-none text-gray-600 leading-relaxed" v-html="blog.content">
-          </article>
+          <article class="prose prose-lg max-w-none text-gray-600 leading-relaxed" v-html="formattedContent"></article>
           <!-- <div class="mt-16 pt-8 border-t border-gray-100 italic text-gray-400">
             #Undangin #DigitalInvitation #EventTips
           </div> -->
@@ -138,3 +165,14 @@
 
   <Footer />
 </template>
+
+<style>
+/* Pastikan link di dalam artikel menonjol */
+.prose a {
+  @apply text-blue-600 transition-colors duration-200;
+}
+.prose a:hover {
+  @apply text-blue-800;
+}
+
+</style>

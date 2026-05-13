@@ -18,7 +18,7 @@
       <i class="bx bx-phone text-2xl"></i>
     </a>
     
-    <a href="https://instagram.com/undangin" class="text-white hover:text-blue-400 transition-all transform hover:scale-110">
+    <a href="https://instagram.com/undangin.official" class="text-white hover:text-blue-400 transition-all transform hover:scale-110">
       <i class="bx bxl-instagram text-2xl"></i>
     </a>
     

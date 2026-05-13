@@ -22,13 +22,45 @@
     data
   } = await useFetch(`${config.public.apiUrl}/events`)
 
-  onMounted(() => {
-  })
+  onMounted(() => {})
   const imageGridRef = ref(null);
   const statsGridRef = ref(null);
+  const bentoItems = ref([]);
 
   onMounted(async () => {
     await nextTick();
+
+    if (process.client && bentoItems.value.length > 0) {
+      bentoItems.value.forEach((el, index) => {
+        let xPos = 0;
+        let yPos = 0;
+
+        if (index === 0) xPos = -200;
+        else if (index === 1) yPos = -200;
+        else if (index === 2) xPos = 200;
+
+        gsap.from(el, {
+          x: xPos,
+          y: yPos,
+          opacity: 0,
+          duration: 3,
+          ease: "expo.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%", // Muncul saat bagian atas elemen menyentuh 90% layar
+            end: "bottom 30%", // Selesai/Reset saat bagian bawah elemen menyentuh 20% layar
+
+            /**
+             * KUNCI UTAMA: toggleActions
+             * Urutannya: onEnter, onLeave, onEnterBack, onLeaveBack
+             * play: jalankan animasi
+             * reverse: jalankan animasi terbalik (biar balik ke posisi xPos/yPos awal)
+             */
+            toggleActions: "play reverse play reverse"
+          }
+        });
+      });
+    }
 
     // FIX: Animasi Parallax halus untuk SELURUH container grid gambar (bukan per item)
     if (imageGridRef.value) {
@@ -91,14 +123,14 @@
           Seamless Event Experiences
         </h1>
         <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
-          With hundreds of events managed and over a million guests registered, our platform continues to deliver reliable event solutions
+          With hundreds of events managed and over a million guests registered, our platform continues to deliver
+          reliable event solutions
         </p>
       </div>
 
       <div ref="imageGridRef" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div v-for="(photo, index) in bentoPhotos" :key="index"
+        <div v-for="(photo, index) in bentoPhotos" :key="index" ref="bentoItems"
           class="h-[400px] w-full relative rounded-[40px] overflow-hidden bg-gray-100 shadow-xl group">
-          
           <img :src="photo.url" :alt="photo.title"
             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
 

@@ -3,12 +3,12 @@
     'fixed top-0 w-full z-[100] transition-all duration-300 px-6 py-4 will-change-transform',
     isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
   ]">
+  <div class="container">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       <div class="flex items-center space-x-12">
         <nuxt-link to="/" class="flex items-center">
           <img src="/images/undangin-logo.png" alt="Undangin Logo"
-            class="h-8 md:h-10 w-auto object-contain transition-all"
-            :class="[isScrolled ? 'brightness-100' : 'brightness-0 invert']" />
+            class="h-8 md:h-10 w-auto "/>
         </nuxt-link>
         <div :class="[
             'hidden md:flex space-x-8 font-medium transition-colors items-center',
@@ -16,8 +16,8 @@
           ]">
           <nuxt-link to="/" class="hover:text-blue-500 transition">Home</nuxt-link>
           <nuxt-link to="#" class="hover:text-blue-500 transition">Services</nuxt-link>
-          <nuxt-link to="#" class="hover:text-blue-500 transition">Portofolio</nuxt-link>
-          <nuxt-link to="#" class="hover:text-blue-500 transition">Blog & Article</nuxt-link>
+          <nuxt-link to="/portofolio" class="hover:text-blue-500 transition">Portofolio</nuxt-link>
+          <nuxt-link to="/blog" class="hover:text-blue-500 transition">Blog & Article</nuxt-link>
         </div>
       </div>
       <div class="flex items-center gap-4">
@@ -52,7 +52,7 @@
             </div>
           </transition>
         </div>
-        <button @click="toggleMenu" 
+        <button @click="toggleMenu"
           class="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 z-[110]">
           <span :class="['w-6 h-0.5 transition-all duration-300', 
             isScrolled ? 'bg-black' : 'bg-white',
@@ -66,12 +66,17 @@
         </button>
       </div>
     </div>
+    </div>
     <div ref="menuOverlay"
       class="fixed top-0 right-0 h-screen w-[85%] md:w-[33%] bg-white z-[105] shadow-[-10px_0_30px_rgba(0,0,0,0.1)] translate-x-[100%] flex flex-col p-10 pt-32 space-y-6">
-      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Home</nuxt-link>
-      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Services</nuxt-link>
-      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Portofolio</nuxt-link>
-      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Blog & Article</nuxt-link>
+      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Home
+      </nuxt-link>
+      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Services
+      </nuxt-link>
+      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Portofolio
+      </nuxt-link>
+      <nuxt-link @click="toggleMenu" to="#" class="text-xl font-bold text-black border-b border-gray-50 pb-4">Blog &
+        Article</nuxt-link>
       <div class="pt-6">
         <button class="w-full bg-blue-600 text-white px-6 py-4 rounded-xl font-bold shadow-lg">
           Get Started
@@ -83,10 +88,24 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, onUnmounted, nextTick } from 'vue'
-  import { useI18n } from 'vue-i18n'
-  import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import {
+    ref,
+    onMounted,
+    onUnmounted,
+    nextTick
+  } from 'vue'
+  import {
+    useI18n
+  } from 'vue-i18n'
+  import {
+    gsap
+  } from 'gsap'
+  import {
+    ScrollTrigger
+  } from 'gsap/ScrollTrigger'
+  import {
+    watch
+  } from 'vue'
 
   const isScrolled = ref(false)
   const isMenuOpen = ref(false)
@@ -96,7 +115,10 @@
   const menuOverlay = ref(null)
   const dropdownRef = ref(null)
 
-  const { locale, setLocale } = useI18n()
+  const {
+    locale,
+    setLocale
+  } = useI18n()
   const changeLanguage = (lang) => {
     if (typeof setLocale === 'function') {
       setLocale(lang)
@@ -131,54 +153,65 @@
   }
 
   onMounted(() => {
-    if (process.client) {
-      const savedLocale = localStorage.getItem('user-locale')
-      if (savedLocale) {
-        setLocale ? setLocale(savedLocale) : (locale.value = savedLocale)
-      } else {
-        const defaultLang = 'id'
-        setLocale ? setLocale(defaultLang) : (locale.value = defaultLang)
-        localStorage.setItem('user-locale', defaultLang)
-      }
-      gsap.registerPlugin(ScrollTrigger)
-      
-      const handleScroll = () => {
-        isScrolled.value = window.scrollY > 50
-      }
+  if (process.client) {
+    // 1. Inisialisasi Locale
+    const savedLocale = localStorage.getItem('user-locale') || 'id'
+    setLocale ? setLocale(savedLocale) : (locale.value = savedLocale)
+    
+    gsap.registerPlugin(ScrollTrigger)
 
-      window.addEventListener('scroll', handleScroll)
-      window.addEventListener('click', handleClickOutside)
-
-      nextTick(() => {
-        const target = document.querySelector("section")
-        
-        if (target && navRef.value) {
-          ScrollTrigger.create({
-            trigger: target,
-            start: "top top",
-            onLeave: () => {
-              gsap.to(navRef.value, {
-                yPercent: -120,
-                duration: 0.4,
-                ease: "power2.inOut"
-              })
-            },
-            onEnterBack: () => {
-              gsap.to(navRef.value, {
-                yPercent: 0,
-                duration: 0.4,
-                ease: "power2.out"
-              })
-            }
-          })
-        }
-      })
+    // 2. Handler Scroll Manual untuk bg-white
+    const handleScroll = () => {
+      isScrolled.value = window.scrollY > 50
     }
-  })
+    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('click', handleClickOutside)
+
+    nextTick(() => {
+      // Pastikan trigger-nya adalah section HERO (section pertama)
+      // Gunakan ID atau class yang spesifik jika ada banyak tag <section>
+      const heroSection = document.querySelector("section") 
+
+      if (heroSection && navRef.value) {
+        ScrollTrigger.create({
+          trigger: heroSection,
+          start: "top top",
+          // Navbar menghilang tepat saat bagian BAWAH hero menyentuh ATAS layar
+          end: "bottom top", 
+          onLeave: () => {
+            gsap.to(navRef.value, {
+              yPercent: -120,
+              duration: 0.4,
+              ease: "power2.inOut",
+              overwrite: "auto"
+            })
+          },
+          onEnterBack: () => {
+            gsap.to(navRef.value, {
+              yPercent: 0,
+              duration: 0.4,
+              ease: "power2.out",
+              overwrite: "auto"
+            })
+          }
+        })
+      }
+    })
+
+    // 3. Watch Locale untuk Refresh Posisi
+    watch(locale, async () => {
+      await nextTick()
+      ScrollTrigger.refresh()
+      isScrolled.value = window.scrollY > 50
+    })
+  }
+})
 
   onUnmounted(() => {
     if (process.client) {
-      window.removeEventListener('scroll', () => { isScrolled.value = window.scrollY > 50 })
+      window.removeEventListener('scroll', () => {
+        isScrolled.value = window.scrollY > 50
+      })
       window.removeEventListener('click', handleClickOutside)
     }
   })

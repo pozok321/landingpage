@@ -45,7 +45,10 @@
         BoltIcon,
         PhoneIcon,
         ShieldCheckIcon,
-        ClockIcon
+        ClockIcon,
+        ComputerDesktopIcon,
+        ChartBarIcon
+
     } from '@heroicons/vue/24/solid'
 
     const features = [{
@@ -69,30 +72,17 @@
             icon: ClockIcon
         },
         {
-            title: 'Fast Setup',
-            desc: 'Ready to use in minutes',
-            icon: BoltIcon
+            title: 'Multi Platform',
+            desc: 'Access from any device',
+            icon: ComputerDesktopIcon
         },
         {
-            title: 'Fast Setup',
-            desc: 'Ready to use in minutes',
-            icon: BoltIcon
+            title: 'Real-time Analytics',
+            desc: 'Monitor guest data in real-time',
+            icon: ChartBarIcon
         },
-        {
-            title: 'Data Security',
-            desc: 'Guest data stored securely and encrypted',
-            icon: ShieldCheckIcon
-        },
-        {
-            title: 'Data Security',
-            desc: 'Guest data stored securely and encrypted',
-            icon: ShieldCheckIcon
-        },
-        {
-            title: 'Data Security',
-            desc: 'Guest data stored securely and encrypted',
-            icon: ShieldCheckIcon
-        },
+        
+       
     ]
 </script>
 
