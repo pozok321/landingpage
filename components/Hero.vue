@@ -43,7 +43,7 @@
 </script>
 
 <template>
-  <section ref="heroSection" class="relative h-screen bg-white overflow-hidden z-20">
+  <section id="hero-trigger" ref="heroSection" class="relative h-screen bg-white overflow-hidden z-20">
     <div ref="innerContainer" class="relative w-full h-full overflow-hidden flex items-center will-change-transform">
       <div class="absolute inset-0 z-10">
         <img 

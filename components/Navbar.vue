@@ -12,7 +12,7 @@
         </nuxt-link>
         <div :class="[
             'hidden md:flex space-x-8 font-medium transition-colors items-center',
-            isScrolled ? 'text-gray-600' : 'text-white/90'
+            isScrolled ? 'text-gray-600' : 'text-black-600'
           ]">
           <nuxt-link to="/" class="hover:text-blue-500 transition">Home</nuxt-link>
           <nuxt-link to="#" class="hover:text-blue-500 transition">Services</nuxt-link>
@@ -24,7 +24,7 @@
         <div class="relative" ref="dropdownRef">
           <button @click="isDropdownOpen = !isDropdownOpen"
             class="flex items-center gap-2 bg-black/5 backdrop-blur-md px-3 md:px-4 py-2 rounded-full border border-black/10 hover:bg-black/10 transition-all text-[10px] md:text-xs font-bold"
-            :class="isScrolled ? 'text-black' : 'text-white border-white/20'">
+            :class="isScrolled ? 'text-black' : 'text-black border-white/20'">
             <span>{{ locale.toUpperCase() }}</span>
             <svg class="w-3 h-3 transition-transform duration-300" :class="{ 'rotate-180': isDropdownOpen }" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
@@ -41,12 +41,12 @@
               class="absolute right-0 mt-2 w-36 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-1 z-[110]">
               <button @click="changeLanguage('id')"
                 class="w-full text-left px-4 py-3 text-xs font-bold flex items-center justify-between hover:bg-blue-50 transition-colors"
-                :class="locale === 'id' ? 'text-blue-600' : 'text-gray-700'">
+                :class="locale === 'id' ? 'text-black-600' : 'text-gray-700'">
                 Bahasa Indonesia
               </button>
               <button @click="changeLanguage('en')"
                 class="w-full text-left px-4 py-3 text-xs font-bold flex items-center justify-between hover:bg-blue-50 transition-colors"
-                :class="locale === 'en' ? 'text-blue-600' : 'text-gray-700'">
+                :class="locale === 'en' ? 'text-black-600' : 'text-gray-700'">
                 English
               </button>
             </div>
@@ -88,117 +88,163 @@
 </template>
 
 <script setup>
-  import {
-    ref,
-    onMounted,
-    onUnmounted,
-    nextTick
-  } from 'vue'
-  import {
-    useI18n
-  } from 'vue-i18n'
-  import {
-    gsap
-  } from 'gsap'
-  import {
-    ScrollTrigger
-  } from 'gsap/ScrollTrigger'
-  import {
-    watch
-  } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router' // Tambahkan ini untuk memantau perubahan halaman
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-  const isScrolled = ref(false)
-  const isMenuOpen = ref(false)
-  const isDropdownOpen = ref(false)
+const isScrolled = ref(false)
+const isMenuOpen = ref(false)
+const isDropdownOpen = ref(false)
 
-  const navRef = ref(null)
-  const menuOverlay = ref(null)
-  const dropdownRef = ref(null)
+const navRef = ref(null)
+const menuOverlay = ref(null)
+const dropdownRef = ref(null)
 
-  const {
-    locale,
-    setLocale
-  } = useI18n()
-  const changeLanguage = (lang) => {
-    if (typeof setLocale === 'function') {
-      setLocale(lang)
-    } else {
-      locale.value = lang
-    }
-    localStorage.setItem('user-locale', lang)
+const router = useRouter()
+let scrollTriggerInstance = null // Simpan instance agar bisa dihancurkan/dibuat ulang
+
+const { locale, setLocale } = useI18n()
+
+const changeLanguage = (lang) => {
+  if (typeof setLocale === 'function') {
+    setLocale(lang)
+  } else {
+    locale.value = lang
+  }
+  localStorage.setItem('user-locale', lang)
+  isDropdownOpen.value = false
+}
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+  if (isMenuOpen.value) {
+    gsap.to(menuOverlay.value, {
+      xPercent: -100,
+      duration: 0.6,
+      ease: "expo.out"
+    })
+  } else {
+    gsap.to(menuOverlay.value, {
+      xPercent: 0,
+      duration: 0.5,
+      ease: "expo.in"
+    })
+  }
+}
+
+const handleClickOutside = (event) => {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
     isDropdownOpen.value = false
   }
+}
 
-  const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value
-    if (isMenuOpen.value) {
-      gsap.to(menuOverlay.value, {
-        xPercent: -100,
-        duration: 0.6,
-        ease: "expo.out"
-      })
-    } else {
-      gsap.to(menuOverlay.value, {
-        xPercent: 0,
-        duration: 0.5,
-        ease: "expo.in"
-      })
-    }
+// Handler scroll dipisah agar bisa di-remove dengan benar saat unmount
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50
+}
+
+// Fungsi utama untuk menginisialisasi ulang ScrollTrigger Navbar
+const initNavbarScrollTrigger = async () => {
+  if (!process.client) return
+
+  await nextTick()
+  
+  // Hancurkan instance lama agar tidak bentrok
+  if (scrollTriggerInstance) {
+    scrollTriggerInstance.kill()
+    scrollTriggerInstance = null
   }
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
-      isDropdownOpen.value = false
-    }
-  }
+  const heroTarget = document.querySelector("#hero-trigger")
 
-  onMounted(() => {
+  if (heroTarget && navRef.value) {
+    // === SKENARIO A: JIKA DI HALAMAN HOME (ADA HERO) ===
+    // Mengikuti pergerakan Hero Section agar presisi dengan animasi gambar mengecil
+    gsap.set(navRef.value, { yPercent: 0 })
+
+    scrollTriggerInstance = ScrollTrigger.create({
+      trigger: heroTarget,
+      start: "top top",
+      end: "bottom top",
+      onLeave: () => hideNavbar(),
+      onEnterBack: () => showNavbar()
+    })
+  } else if (navRef.value) {
+    // === SKENARIO B: JIKA DI HALAMAN LAIN (PORTOFOLIO, BLOG, DLL) ===
+    // Menggunakan scroll body global. Ketika scroll turun melewati 150px, navbar sembunyi.
+    gsap.set(navRef.value, { yPercent: 0 })
+
+    scrollTriggerInstance = ScrollTrigger.create({
+      start: "top -150", // Mulai tericu ketika user scroll ke bawah sejauh 150px
+      onUpdate: (self) => {
+        // self.direction: 1 artinya scroll ke bawah, -1 artinya scroll ke atas
+        if (self.direction === 1) {
+          hideNavbar()
+        } else {
+          showNavbar()
+        }
+      }
+    })
+  }
+}
+
+// Fungsi helper untuk menyembunyikan Navbar
+const hideNavbar = () => {
+  gsap.to(navRef.value, {
+    yPercent: -120,
+    duration: 0.4,
+    ease: "power2.inOut",
+    overwrite: "auto"
+  })
+}
+
+// Fungsi helper untuk memunculkan Navbar
+const showNavbar = () => {
+  gsap.to(navRef.value, {
+    yPercent: 0,
+    duration: 0.4,
+    ease: "power2.out",
+    overwrite: "auto"
+  })
+}
+
+onMounted(() => {
   if (process.client) {
-    // 1. Inisialisasi Locale
     const savedLocale = localStorage.getItem('user-locale') || 'id'
     setLocale ? setLocale(savedLocale) : (locale.value = savedLocale)
     
     gsap.registerPlugin(ScrollTrigger)
 
-    // 2. Handler Scroll Manual untuk bg-white
-    const handleScroll = () => {
-      isScrolled.value = window.scrollY > 50
-    }
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('click', handleClickOutside)
 
-    nextTick(() => {
-      // Pastikan trigger-nya adalah section HERO (section pertama)
-      // Gunakan ID atau class yang spesifik jika ada banyak tag <section>
-      const heroSection = document.querySelector("section") 
+    // Jalankan pertama kali saat aplikasi di-refresh/diakses langsung
+    initNavbarScrollTrigger()
 
-      if (heroSection && navRef.value) {
-        ScrollTrigger.create({
-          trigger: heroSection,
-          start: "top top",
-          // Navbar menghilang tepat saat bagian BAWAH hero menyentuh ATAS layar
-          end: "bottom top", 
-          onLeave: () => {
-            gsap.to(navRef.value, {
-              yPercent: -120,
-              duration: 0.4,
-              ease: "power2.inOut",
-              overwrite: "auto"
-            })
-          },
-          onEnterBack: () => {
-            gsap.to(navRef.value, {
-              yPercent: 0,
-              duration: 0.4,
-              ease: "power2.out",
-              overwrite: "auto"
-            })
-          }
-        })
+    // SOLUSI: Berikan sedikit jeda (delay) saat memantau perpindahan halaman 
+    // agar DOM halaman baru selesai di-render sempurna oleh Nuxt 3
+    watch(
+      () => router.currentRoute.value.path,
+      () => {
+        // Hancurkan trigger lama dengan segera agar tidak conflict
+        if (scrollTriggerInstance) {
+          scrollTriggerInstance.kill()
+          scrollTriggerInstance = null
+        }
+        
+        // Reset posisi navbar ke default agar tidak tersangkut sembunyi
+        gsap.set(navRef.value, { yPercent: 0 })
+
+        // Berikan delay aman 100ms-200ms untuk proses transisi halaman Nuxt SPA
+        setTimeout(async () => {
+          await initNavbarScrollTrigger()
+          ScrollTrigger.refresh()
+        }, 200) 
       }
-    })
+    )
 
-    // 3. Watch Locale untuk Refresh Posisi
     watch(locale, async () => {
       await nextTick()
       ScrollTrigger.refresh()
@@ -206,13 +252,4 @@
     })
   }
 })
-
-  onUnmounted(() => {
-    if (process.client) {
-      window.removeEventListener('scroll', () => {
-        isScrolled.value = window.scrollY > 50
-      })
-      window.removeEventListener('click', handleClickOutside)
-    }
-  })
 </script>
