@@ -43,7 +43,9 @@ export default defineNuxtConfig({
     download: true, // Download font agar host sendiri (lebih cepat)
   },nitro: {
     preset: 'netlify'
+  },
+  devServer: {
+    host: 'localhost',
+    port: 3009
   }
-
-  
 })

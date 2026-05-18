@@ -15,7 +15,7 @@
             isScrolled ? 'text-gray-600' : 'text-black-600'
           ]">
           <nuxt-link to="/" class="hover:text-blue-500 transition">Home</nuxt-link>
-          <nuxt-link to="#" class="hover:text-blue-500 transition">Services</nuxt-link>
+          <button @click="navigateToServices" class="hover:text-blue-500 transition text-left font-medium">Services</button>
           <nuxt-link to="/portofolio" class="hover:text-blue-500 transition">Portofolio</nuxt-link>
           <nuxt-link to="/blog" class="hover:text-blue-500 transition">Blog & Article</nuxt-link>
         </div>
@@ -88,9 +88,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router' // Tambahkan ini untuk memantau perubahan halaman
+import { useRouter } from 'vue-router'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -208,6 +208,34 @@ const showNavbar = () => {
     ease: "power2.out",
     overwrite: "auto"
   })
+}
+
+// Tambahkan fungsi ini di bagian bawah <script setup> sebelum onMounted
+
+const navigateToServices = async () => {
+  if (!process.client) return
+
+  // Cek apakah user saat ini sedang berada di halaman Home
+  if (router.currentRoute.value.path === '/') {
+    const target = document.querySelector("#ticket-section")
+    if (target) {
+      target.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      })
+    }
+  } else {
+    // Jika sedang di page lain (/portofolio atau /blog), lempar balik ke Home dengan hash target
+    await router.push({ path: '/', hash: '#ticket-section' })
+    
+    // Berikan sedikit waktu agar Nuxt merender ulang halaman utama sebelum melakukan scroll
+    setTimeout(() => {
+      const target = document.querySelector("#ticket-section")
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 300)
+  }
 }
 
 onMounted(() => {

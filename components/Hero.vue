@@ -2,49 +2,18 @@
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-  const heroSection = ref(null);
-  const innerContainer = ref(null);
-  const content = ref(null);
-
   onMounted(async () => {
     await nextTick();
 
     if (process.client) {
-      gsap.registerPlugin(ScrollTrigger);
-
-      // const tl = gsap.timeline({
-      //   scrollTrigger: {
-      //     trigger: heroSection.value,
-      //     start: "top top",
-      //     end: "+=", // Menambah durasi scroll agar efek lebih terasa
-      //     pin: true,     // Menahan Hero di posisi layar
-      //     scrub: 1.5,    // Nilai lebih tinggi (1.5) membuat scroll terasa lebih halus
-      //   }
-      // });
-
-      // 1. Teks memudar dan naik ke atas (Menghilang duluan)
-      // tl.to(content.value, {
-      //   opacity: 0,
-      //   y: -100,
-      //   duration: 1,
-      //   ease: "power2.inOut"
-      // });
-
-      // 2. Kontainer Membesar (Zoom In)
-      // Memberikan efek seolah-olah penonton masuk ke dalam gambar
-      // tl.to(innerContainer.value, {
-      //   scale: 3,            
-      //   duration: 2,
-      //   ease: "power2.inOut",
-      //   borderRadius: "0px"   
-      // }, "-=0.5");          
+      gsap.registerPlugin(ScrollTrigger);     
     }
   });
 </script>
 
 <template>
-  <section id="hero-trigger" ref="heroSection" class="relative h-screen bg-white overflow-hidden z-20">
-    <div ref="innerContainer" class="relative w-full h-full overflow-hidden flex items-center will-change-transform">
+  <section id="hero-trigger" class="relative h-screen bg-white overflow-hidden z-20">
+    <div class="relative w-full h-full overflow-hidden flex items-center will-change-transform">
       <div class="absolute inset-0 z-10">
         <img 
           src="/images/landingpage.jpg" 
@@ -55,7 +24,7 @@
       </div>
       
       <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-8 md:px-20 relative z-30">
-        <div ref="content" class="flex flex-col items-start text-left">
+        <div class="flex flex-col items-start text-left">
           <span class="inline-block px-4 py-1.5 mb-8 text-xs bg-white/80 backdrop-blur-sm tracking-[0.1em] border border-black/10 rounded-full text-black font-bold">
             LEADING GUEST SOLUTION
           </span>

@@ -61,6 +61,12 @@ getPromo();
   }
 })
 
+const handlePromoClick = () => {
+  if (process.client) {
+    window.open(buttonLink.value, '_blank')
+  }
+}
+
 const closePromo = (permanently = false) => {
   if (permanently) {
     // Jika ditekan "Jangan tunjukkan lagi", simpan di LocalStorage
@@ -94,23 +100,16 @@ const closePromo = (permanently = false) => {
           @click="closePromo(false)" 
           class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <img :src="promoImage" alt="Promo Image" class="mx-auto mb-6 w-full h-48 object-cover rounded-lg" />
+        <img :src="promoImage" alt="Promo Image"  class="mx-auto mb-6 w-full h-48 object-cover rounded-lg" @click="handlePromoClick"/>
         <p class="text-gray-600 mb-8 leading-relaxed">
           {{promoText}}
         </p>
 
         <div class="flex flex-col gap-4 items-center">
-          <button 
-            @click="() => $router.push(buttonLink)"
-            class="w-full px-8 py-4 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30"
-          >
-            {{buttonText}}
-          </button>
-          
           <!-- Button Kecil "Jangan tunjukkan lagi" -->
           <button 
             @click="closePromo(true)"
