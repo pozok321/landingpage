@@ -39,17 +39,6 @@
     }
   };
   
-
-  // --- BAGIAN PENTING: REAKTIVITAS BAHASA ---
-  
-  // Jika Anda menggunakan Nuxt i18n, pasang watcher ini:
-  // const { locale } = useI18n()
-  // watch(locale, () => {
-  //   fetchBlogDetail()
-  // })
-
-  // Jika Anda menggunakan event manual/localStorage change:
-  // Kita pantau route params agar saat pindah artikel datanya update
   watch(() => route.params.slug, () => {
     fetchBlogDetail()
   })
@@ -62,20 +51,9 @@ const formattedContent = computed(() => {
   if (!blog.value?.content) return ''
 
   let content = blog.value.content
-
-  // 1. Perbaikan Link Website & Sosial Media (Mencegah localhost:3000/...)
-  // Kita cari link yang tidak diawali http atau https atau mailto
   content = content.replace(/href="www\./g, 'href="https://www.')
-  
-  // KHUSUS INSTAGRAM: Jika ada link yang langsung menuju instagram.com
   content = content.replace(/href="instagram\.com/g, 'href="https://instagram.com')
-
-  // 2. Pastikan semua link terbuka di tab baru agar user tidak meninggalkan website
   content = content.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ')
-
-  // 3. Deteksi Email (@undangin.official jika itu email)
-  // Tapi hati-hati, jika @undangin.official adalah USERNAME Instagram, jangan gunakan mailto.
-  // Jika itu email (ada tanda @ dan domain .com/.id), gunakan ini:
   const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
   
   content = content.replace(emailRegex, (match) => {
@@ -103,16 +81,17 @@ const formattedContent = computed(() => {
         {{ blog.title }}
       </h1>
 
-      <div class="w-full aspect-video rounded-[32px] overflow-hidden mb-12 shadow-lg">
-        <img :src="blog.featured_image" :alt="blog.alt_image" class="w-full h-full object-cover" />
-      </div>
+     <div class="w-full aspect-video rounded-[32px] overflow-hidden mb-12 shadow-lg">
+  <img 
+    :src="blog.featured_image" 
+    :alt="blog.alt_image" 
+    :title="blog.alt_image" class="w-full h-full object-cover" 
+  />
+</div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
         <div class="lg:col-span-8">
           <article class="prose prose-lg max-w-none text-gray-600 leading-relaxed" v-html="formattedContent"></article>
-          <!-- <div class="mt-16 pt-8 border-t border-gray-100 italic text-gray-400">
-            #Undangin #DigitalInvitation #EventTips
-          </div> -->
         </div>
 
         <aside class="lg:col-span-4">

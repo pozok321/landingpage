@@ -338,7 +338,7 @@
                     {{ activeTab === 'private' ? 'Key Features' : 'Ticketing Services' }}
                 </h2>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
                     <div class="flex flex-wrap gap-4 h-fit">
                         <div v-for="(feature, idx) in (activeTab === 'private' ? keyFeatures : ticketingKeyFeatures)"
                             :key="idx"
